@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_portfolio/constants.dart';
+import 'package:my_portfolio/data/portfolio_data.dart';
 
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({super.key});
@@ -12,7 +13,7 @@ class ExperienceSection extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 20 : 80,
-        vertical: isMobile ? 60 : 100,
+        vertical: isMobile ? 60 : 70,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -62,66 +63,37 @@ class ExperienceSection extends StatelessWidget {
             ),
           ),
           
-          const SizedBox(height: 50),
+          const SizedBox(height: 35),
           
           // Experience timeline
           _buildExperienceTimeline(isMobile),
-          
-          const SizedBox(height: 40),
-          
-          // Placeholder for future experiences
-          _buildAddMoreCard(isMobile),
         ],
       ),
     );
   }
 
   Widget _buildExperienceTimeline(bool isMobile) {
-    // Sample experience data with placeholders
-    final experiences = [
-      {
-        'role': 'Freelance Flutter Developer',
-        'company': 'Self-Employed',
-        'duration': 'Present',
-        'description':
-            'Building custom mobile and web applications for clients worldwide. Specializing in Flutter app development with clean architecture and modern UI/UX.',
-        'achievements': [
-          'Delivered 10+ successful Flutter projects',
-          'Achieved 5-star client ratings consistently',
-          'Implemented complex state management solutions',
-        ],
-        'tech': ['Flutter', 'Dart', 'Firebase', 'REST APIs'],
-        'current': true,
-      },
-      {
-        'role': 'Flutter Developer',
-        'company': 'Your Previous Company (If Any)',
-        'duration': '6 months',
-        'description':
-            'Developed and maintained mobile applications using Flutter. Collaborated with cross-functional teams to deliver high-quality products.',
-        'achievements': [
-          'Built responsive UI components',
-          'Integrated third-party APIs and services',
-          'Improved app performance by 30%',
-        ],
-        'tech': ['Flutter', 'Dart', 'Firebase'],
-        'placeholder': true, // Mark as placeholder for future data
-      },
-      // Additional placeholder for future experiences
-      {
-        'role': 'Add Your Experience',
-        'company': 'Future Position',
-        'duration': 'TBD',
-        'description':
-            'This is a placeholder for future experience. You can add more details later.',
-        'achievements': [
-          'Achievement to be added',
-          'Achievement to be added',
-        ],
-        'tech': ['Tech Stack'],
-        'placeholder': true,
-      },
-    ];
+    // Use real experience data from PortfolioData
+    final experiences = PortfolioData.experience.map((exp) {
+      // Parse description to extract achievements
+      final description = exp['description'] as String;
+      final descriptionLines = description.split('\n');
+      final mainDesc = descriptionLines.first;
+      final achievements = descriptionLines.skip(1)
+          .where((line) => line.trim().isNotEmpty)
+          .map((line) => line.replaceAll('• ', '').trim())
+          .toList();
+
+      return {
+        'role': exp['role'],
+        'company': exp['company'],
+        'duration': exp['period'],
+        'location': exp['location'],
+        'description': mainDesc,
+        'achievements': achievements.isEmpty ? null : achievements,
+        'current': exp['current'] == 'true',
+      };
+    }).toList();
 
     return Column(
       children: experiences.asMap().entries.map((entry) {
@@ -138,18 +110,17 @@ class ExperienceSection extends StatelessWidget {
 
   Widget _buildExperienceCard(Map<String, dynamic> exp,
       {required bool isLeft, required bool isMobile}) {
-    final isPlaceholder = exp['placeholder'] == true;
     final isCurrent = exp['current'] == true;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 30),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isMobile)
             Expanded(
               child: isLeft
-                  ? _buildCardContent(exp, isPlaceholder, isCurrent)
+                  ? _buildCardContent(exp, isCurrent)
                   : const SizedBox(),
             ),
           
@@ -157,41 +128,38 @@ class ExperienceSection extends StatelessWidget {
           Column(
             children: [
               Container(
-                width: 20,
-                height: 20,
+                width: 18,
+                height: 18,
                 decoration: BoxDecoration(
                   gradient: isCurrent
                       ? LinearGradient(
                           colors: [AppColors.accent, AppColors.accentPurple],
                         )
                       : null,
-                  color: isCurrent ? null : isPlaceholder
-                      ? AppColors.accentPurple
-                      : AppColors.accent,
+                  color: isCurrent ? null : AppColors.accent,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: Colors.white,
-                    width: 3,
+                    width: 2.5,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: (isCurrent ? AppColors.accent : AppColors.accentPurple)
-                          .withOpacity(0.5),
-                      blurRadius: 10,
-                      spreadRadius: 2,
+                      color: AppColors.accent.withOpacity(0.4),
+                      blurRadius: 8,
+                      spreadRadius: 1,
                     ),
                   ],
                 ),
               ),
               Container(
                 width: 2,
-                height: 100,
+                height: 80,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      AppColors.accent.withOpacity(0.5),
+                      AppColors.accent.withOpacity(0.4),
                       AppColors.accent.withOpacity(0.1),
                     ],
                   ),
@@ -200,11 +168,11 @@ class ExperienceSection extends StatelessWidget {
             ],
           ),
           
-          const SizedBox(width: 20),
+          const SizedBox(width: 16),
           
           Expanded(
             child: isMobile || !isLeft
-                ? _buildCardContent(exp, isPlaceholder, isCurrent)
+                ? _buildCardContent(exp, isCurrent)
                 : const SizedBox(),
           ),
         ],
@@ -212,237 +180,141 @@ class ExperienceSection extends StatelessWidget {
     );
   }
 
-  Widget _buildCardContent(Map<String, dynamic> exp, bool isPlaceholder, bool isCurrent) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isPlaceholder
-                ? AppColors.accentPurple.withOpacity(0.3)
-                : AppColors.accent.withOpacity(0.2),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: (isPlaceholder ? AppColors.accentPurple : AppColors.accent)
-                  .withOpacity(0.1),
-              blurRadius: 20,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              children: [
-                Icon(
-                  isCurrent
-                      ? Icons.work
-                      : isPlaceholder
-                          ? Icons.add_circle_outline
-                          : Icons.business_center,
-                  color: isPlaceholder ? AppColors.accentPurple : AppColors.accent,
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        exp['role'] as String,
-                        style: AppTextStyles.subHeader.copyWith(
-                          fontSize: 20,
-                          color: isPlaceholder
-                              ? AppColors.textSecondary
-                              : AppColors.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        exp['company'] as String,
-                        style: AppTextStyles.body.copyWith(
-                          fontSize: 14,
-                          color: isPlaceholder
-                              ? AppColors.accentPurple
-                              : AppColors.accent,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (isCurrent)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [AppColors.accent, AppColors.accentPurple],
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      'Current',
-                      style: AppTextStyles.accent.copyWith(
-                        fontSize: 12,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            
-            const SizedBox(height: 8),
-            
-            // Duration
-            Row(
-              children: [
-                Icon(
-                  Icons.access_time,
-                  size: 16,
-                  color: AppColors.textSecondary,
-                ),
-                const SizedBox(width: 6),
-                Text(
-                  exp['duration'] as String,
-                  style: AppTextStyles.body.copyWith(fontSize: 14),
-                ),
-              ],
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // Description
-            Text(
-              exp['description'] as String,
-              style: AppTextStyles.body.copyWith(
-                fontSize: 15,
-                fontStyle: isPlaceholder ? FontStyle.italic : FontStyle.normal,
-              ),
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // Achievements
-            if (exp['achievements'] != null) ...[
-              Text(
-                'Key Achievements:',
-                style: AppTextStyles.subHeader.copyWith(fontSize: 16),
-              ),
-              const SizedBox(height: 8),
-              ...((exp['achievements'] as List).map((achievement) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 8),
-                        width: 6,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: isPlaceholder
-                              ? AppColors.accentPurple
-                              : AppColors.accent,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          achievement,
-                          style: AppTextStyles.body.copyWith(fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList()),
-              const SizedBox(height: 16),
-            ],
-            
-            // Tech stack
-            if (exp['tech'] != null)
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: ((exp['tech'] as List).map((tech) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: (isPlaceholder
-                              ? AppColors.accentPurple
-                              : AppColors.accent)
-                          .withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: (isPlaceholder
-                                ? AppColors.accentPurple
-                                : AppColors.accent)
-                            .withOpacity(0.3),
-                      ),
-                    ),
-                    child: Text(
-                      tech,
-                      style: AppTextStyles.accent.copyWith(
-                        fontSize: 12,
-                        color: isPlaceholder
-                            ? AppColors.accentPurple
-                            : AppColors.accent,
-                      ),
-                    ),
-                  );
-                }).toList()),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddMoreCard(bool isMobile) {
+  Widget _buildCardContent(Map<String, dynamic> exp, bool isCurrent) {
     return Container(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
+        color: AppColors.cardBg,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.accentPurple.withOpacity(0.3),
-          width: 2,
-          style: BorderStyle.solid,
+          color: AppColors.accent.withOpacity(0.2),
         ),
-        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.accent.withOpacity(0.08),
+            blurRadius: 12,
+            spreadRadius: 1,
+          ),
+        ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.add_circle_outline,
-            color: AppColors.accentPurple,
-            size: 48,
+          // Header
+          Row(
+            children: [
+              Icon(
+                isCurrent ? Icons.work : Icons.business_center,
+                color: AppColors.accent,
+                size: 20,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      exp['role'] as String,
+                      style: AppTextStyles.subHeader.copyWith(
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      exp['company'] as String,
+                      style: AppTextStyles.body.copyWith(
+                        fontSize: 13,
+                        color: AppColors.accent,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (isCurrent)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [AppColors.accent, AppColors.accentPurple],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Text(
+                    'Current',
+                    style: AppTextStyles.accent.copyWith(
+                      fontSize: 11,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+            ],
           ),
-          const SizedBox(height: 16),
-          Text(
-            'More Experiences Coming Soon',
-            style: AppTextStyles.subHeader.copyWith(
-              fontSize: 20,
-              color: AppColors.accentPurple,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          
           const SizedBox(height: 8),
-          Text(
-            'This section is ready for your future professional experiences and achievements',
-            style: AppTextStyles.body.copyWith(fontSize: 14),
-            textAlign: TextAlign.center,
+          
+          // Duration
+          Row(
+            children: [
+              Icon(
+                Icons.access_time,
+                size: 14,
+                color: AppColors.textSecondary,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                exp['duration'] as String,
+                style: AppTextStyles.body.copyWith(fontSize: 13),
+              ),
+            ],
           ),
+          
+          const SizedBox(height: 12),
+          
+          // Description
+          Text(
+            exp['description'] as String,
+            style: AppTextStyles.body.copyWith(fontSize: 13),
+          ),
+          
+          const SizedBox(height: 12),
+          
+          // Achievements
+          if (exp['achievements'] != null) ...[ 
+            Text(
+              'Key Responsibilities:',
+              style: AppTextStyles.subHeader.copyWith(fontSize: 14),
+            ),
+            const SizedBox(height: 6),
+            ...((exp['achievements'] as List).map((achievement) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 6),
+                      width: 4,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: AppColors.accent,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        achievement,
+                        style: AppTextStyles.body.copyWith(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList()),
+          ],
         ],
       ),
     );

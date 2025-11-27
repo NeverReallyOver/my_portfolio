@@ -39,7 +39,7 @@ class _SkillsSectionState extends State<SkillsSection> {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 20 : 80,
-        vertical: isMobile ? 60 : 100,
+        vertical: isMobile ? 60 : 70,
       ),
       child: Column(
         children: [
@@ -62,14 +62,14 @@ class _SkillsSectionState extends State<SkillsSection> {
                 textAlign: TextAlign.center,
               ),
               
-              const SizedBox(height: 40),
+              const SizedBox(height: 35),
               
               // Category filter
               _buildCategoryFilter(isMobile),
             ],
           ),
           
-          const SizedBox(height: 50),
+          const SizedBox(height: 40),
           
           // Skills grid
           GridView.builder(
@@ -79,7 +79,7 @@ class _SkillsSectionState extends State<SkillsSection> {
               crossAxisCount: isMobile ? 2 : 4,
               mainAxisSpacing: 20,
               crossAxisSpacing: 20,
-              childAspectRatio: isMobile ? 0.9 : 1.0,
+              childAspectRatio: isMobile ? 0.9 : 1.6,
             ),
             itemCount: filteredSkills.length,
             itemBuilder: (context, index) {
@@ -191,10 +191,10 @@ class _SkillsSectionState extends State<SkillsSection> {
       cursor: SystemMouseCursors.click,
       child: AnimatedContainer(
         duration: AppDurations.medium,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isPlaceholder
                 ? AppColors.accentPurple.withOpacity(0.3)
@@ -203,8 +203,8 @@ class _SkillsSectionState extends State<SkillsSection> {
           boxShadow: [
             BoxShadow(
               color: AppColors.accent.withOpacity(0.05),
-              blurRadius: 20,
-              spreadRadius: 2,
+              blurRadius: 15,
+              spreadRadius: 1,
             ),
           ],
         ),
@@ -213,29 +213,29 @@ class _SkillsSectionState extends State<SkillsSection> {
           children: [
             // Icon
             Container(
-              width: 60,
-              height: 60,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: isPlaceholder
                       ? [AppColors.accentPurple, AppColors.accentPink]
                       : [AppColors.accent, AppColors.accentPurple],
                 ),
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: Colors.white, size: 30),
+              child: Icon(icon, color: Colors.white, size: 24),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             
             // Skill name
             Text(
               name,
-              style: AppTextStyles.subHeader.copyWith(fontSize: 16),
+              style: AppTextStyles.subHeader.copyWith(fontSize: 15),
               textAlign: TextAlign.center,
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             
             // Progress bar
             TweenAnimationBuilder<double>(

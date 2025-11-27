@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_portfolio/constants.dart';
+import 'package:my_portfolio/data/portfolio_data.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -12,7 +13,7 @@ class AboutSection extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 20 : 80,
-        vertical: isMobile ? 60 : 100,
+        vertical: isMobile ? 60 : 70,
       ),
       child: Column(
         children: [
@@ -42,7 +43,7 @@ class AboutSection extends StatelessWidget {
             ],
           ),
           
-          const SizedBox(height: 50),
+          const SizedBox(height: 35),
           
           // Content
           isMobile
@@ -93,7 +94,7 @@ class AboutSection extends StatelessWidget {
         const SizedBox(height: 24),
         
         Text(
-          'Flutter Development Specialist',
+          PortfolioData.aboutTitle,
           style: AppTextStyles.subHeader.copyWith(
             fontSize: isMobile ? 24 : 28,
           ),
@@ -102,14 +103,14 @@ class AboutSection extends StatelessWidget {
         const SizedBox(height: 20),
         
         Text(
-          'I\'m a passionate Flutter developer with expertise in building high-quality, cross-platform mobile and web applications. My journey in Flutter development has enabled me to create scalable, performant solutions that deliver exceptional user experiences.',
+          PortfolioData.aboutDescription1,
           style: AppTextStyles.body,
         ),
         
         const SizedBox(height: 16),
         
         Text(
-          'With a strong focus on clean architecture, state management, and modern development practices, I transform ideas into beautiful, functional applications that work seamlessly across iOS, Android, and Web platforms.',
+          PortfolioData.aboutDescription2,
           style: AppTextStyles.body,
         ),
         
@@ -125,9 +126,9 @@ class AboutSection extends StatelessWidget {
       spacing: 24,
       runSpacing: 16,
       children: [
-        _buildStatItem('2+', 'Years Experience'),
-        _buildStatItem('10+', 'Projects Completed'),
-        _buildStatItem('100%', 'Client Satisfaction'),
+        _buildStatItem(PortfolioData.yearsExperience, 'Years Experience'),
+        _buildStatItem(PortfolioData.projectsCompleted, 'Projects Completed'),
+        _buildStatItem(PortfolioData.clientSatisfaction, 'Client Satisfaction'),
       ],
     );
   }
@@ -160,7 +161,7 @@ class AboutSection extends StatelessWidget {
       crossAxisCount: isMobile ? 1 : 2,
       mainAxisSpacing: 20,
       crossAxisSpacing: 20,
-      childAspectRatio: isMobile ? 1.3 : 1.1,
+      childAspectRatio: isMobile ? 1.3 : 1.7,
       children: [
         _buildExpertiseCard(
           Icons.phone_android,
@@ -212,18 +213,18 @@ class AboutSection extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: AnimatedContainer(
         duration: AppDurations.medium,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
           color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: AppColors.accent.withOpacity(0.1),
           ),
           boxShadow: [
             BoxShadow(
               color: gradientColors[0].withOpacity(0.1),
-              blurRadius: 20,
-              spreadRadius: 2,
+              blurRadius: 15,
+              spreadRadius: 1,
             ),
           ],
         ),
@@ -231,28 +232,28 @@ class AboutSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 60,
-              height: 60,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: gradientColors),
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: Colors.white, size: 30),
+              child: Icon(icon, color: Colors.white, size: 26),
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             
             Text(
               title,
-              style: AppTextStyles.subHeader.copyWith(fontSize: 18),
+              style: AppTextStyles.subHeader.copyWith(fontSize: 17),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             
             Expanded(
               child: Text(
                 description,
-                style: AppTextStyles.body.copyWith(fontSize: 14),
+                style: AppTextStyles.body.copyWith(fontSize: 13),
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
               ),

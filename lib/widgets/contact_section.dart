@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_portfolio/constants.dart';
+import 'package:my_portfolio/data/portfolio_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactSection extends StatefulWidget {
@@ -28,12 +29,19 @@ class _ContactSectionState extends State<ContactSection> {
   Future<void> _launchEmail() async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
-      path: 'your.email@example.com', // Replace with your email
+      path: PortfolioData.email,
       query: 'subject=Portfolio Contact&body=Hello,',
     );
     
     if (await canLaunchUrl(emailUri)) {
       await launchUrl(emailUri);
+    }
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   }
 
@@ -134,21 +142,21 @@ class _ContactSectionState extends State<ContactSection> {
         _buildContactMethod(
           Icons.email,
           'Email',
-          'your.email@example.com',
+          PortfolioData.email,
           () => _launchEmail(),
         ),
         const SizedBox(height: 20),
         _buildContactMethod(
           Icons.location_on,
           'Location',
-          'Your City, Country',
+          PortfolioData.location,
           null,
         ),
         const SizedBox(height: 20),
         _buildContactMethod(
           Icons.schedule,
           'Availability',
-          'Open to freelance projects',
+          PortfolioData.availability,
           null,
         ),
         
@@ -169,17 +177,17 @@ class _ContactSectionState extends State<ContactSection> {
             _buildSocialButton(
               Icons.code,
               'GitHub',
-              () {}, // Add your GitHub URL
+              () => _launchUrl(PortfolioData.githubUrl),
             ),
             _buildSocialButton(
               Icons.work,
               'LinkedIn',
-              () {}, // Add your LinkedIn URL
+              () => _launchUrl(PortfolioData.linkedinUrl),
             ),
             _buildSocialButton(
               Icons.link,
               'Portfolio',
-              () {}, // Add your portfolio URL
+              () => _launchUrl(PortfolioData.portfolioUrl),
             ),
           ],
         ),

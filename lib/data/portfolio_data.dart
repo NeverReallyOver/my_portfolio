@@ -3,28 +3,30 @@
 
 class PortfolioData {
   // Personal Information
-  static const String name = 'Your Name Here';
-  static const String title = 'Flutter Developer';
+  static const String name = 'JANAKIRAMAN VELAYUTHAM';
+  static const String title = 'Associate Java Developer | Flutter Developer';
   static const String tagline = 'Available for Mobile & Web Projects';
+  static const String fullAddress = 'No.14/9, Mangalapuram 1st Street, West Tambaram, Chennai, India';
   static const String description =
-      'Passionate Flutter developer crafting beautiful, high-performance mobile and web applications. Specializing in cross-platform development with clean architecture and exceptional user experiences.';
+      'Associate Java Developer with experience in software and network support. '
+      'Skilled in Java development and Flutter mobile development, with expertise in collaboration across diverse teams. '
+      'Proficient in troubleshooting and delivering reliable IT solutions.';
   
-  static const String location = 'Your City, Country';
+  static const String location = 'Chennai, India';
   static const String availability = 'Freelance Available';
   
   // Contact Information
-  static const String email = 'your.email@example.com';
-  static const String phone = '+1 234 567 8900'; // Optional
+  static const String email = 'vjanakiraman03@gmail.com';
+  static const String phone = '+91 7401033915';
   
   // Social Links
-  static const String githubUrl = 'https://github.com/yourusername';
-  static const String linkedinUrl = 'https://linkedin.com/in/yourusername';
-  static const String portfolioUrl = 'https://yourportfolio.com';
-  static const String twitterUrl = 'https://twitter.com/yourusername'; // Optional
+  static const String githubUrl = 'https://github.com/NeverReallyOver';
+  static const String linkedinUrl = 'https://www.linkedin.com/in/janakiraman-velayutham-6507bb208';
+  static const String portfolioUrl = 'https://karthi-nexgen.tech/';
   
   // Stats
-  static const String yearsExperience = '2+';
-  static const String projectsCompleted = '10+';
+  static const String yearsExperience = '1+';
+  static const String projectsCompleted = '5+';
   static const String clientSatisfaction = '100%';
   
   // About Me
@@ -35,16 +37,114 @@ class PortfolioData {
   static const String aboutDescription2 =
       'With a strong focus on clean architecture, state management, and modern development practices, I transform ideas into beautiful, functional applications that work seamlessly across iOS, Android, and Web platforms.';
   
+  // Skills
+  static const List<String> skills = [
+    "C", "C++", "JAVA", "MySQL", "HTML", "CSS", 
+    "Flutter", "Dart", "JDBC", "AWT", 
+    "Java Networking - Socket Programming",
+    "Networking, Firewall - VPN",
+    "Scrum", "Agile methodology"
+  ];
+  
+  // Languages
+  static const List<String> languages = [
+    "English", "Tamil", "Hindi"
+  ];
+  
+  // Experience
+  static const List<Map<String, String>> experience = [
+    {
+      "role": "Flutter Dev - Intern",
+      "company": "ZEBU SHARE AND WEALTH MANAGEMENTS PVT LTD",
+      "period": "February 2025 – present",
+      "location": "Chennai",
+      "description": "Building the UI of a mobile application for Android and iOS",
+      "current": "true"
+    },
+    {
+      "role": "ADMIN - EXECUTIVE",
+      "company": "CAPRICORN FOOD PRODUCTS INDIA LIMITED",
+      "period": "August 2023 – July 2024",
+      "location": "Chennai",
+      "description": 
+          "Collaborated across teams to enhance network performance and user support, boosting system reliability.\n"
+          "• Configured LAN and network printers.\n"
+          "• Resolved Outlook client issues.\n"
+          "• Managed domain configuration and user profiles on Windows Server 2003/2008.\n"
+          "• Maintained IT assets and management.\n"
+          "• Created and edited documents, reports, and presentations using MS Office Suite.\n"
+          "• Managed office supplies inventory for seamless operations"
+    },
+    {
+      "role": "ADMIN-EXECUTIVE",
+      "company": "MOZHITHI ENTERPRISES",
+      "period": "September 2022 – May 2023",
+      "location": "Singaperumal Koil",
+      "description": 
+          "Desktop support.\n"
+          "• Troubleshooting all network & printer connectivity.\n"
+          "• All kinds of Desktop issues troubleshooting.\n"
+          "• Established and maintained relationships with suppliers and contractors."
+    }
+  ];
+  
+  // Education
+  static const List<Map<String, String>> education = [
+    {
+      "degree": "B.E (CSE)",
+      "school": "ARM COLLEGE OF ENGINEERING AND TECHNOLOGY",
+      "period": "2018 – 2022",
+      "location": "Maraimalainagar",
+      "score": "73.5%"
+    },
+    {
+      "degree": "HSC",
+      "school": "KUMARAJAH MUTHIAH HR SEC SCHOOL",
+      "period": "2017 – 2018",
+      "location": "Chennai",
+      "score": "51.5%"
+    },
+    {
+      "degree": "SSLC",
+      "school": "SUBHAM VIDHYALAYA CBSE SCHOOL",
+      "period": "2015 – 2016",
+      "location": "Maduranthakam",
+      "score": "70.0%"
+    }
+  ];
+  
+  // Courses
+  static const List<Map<String, String>> courses = [
+    {
+      "title": "JAVA FULL STACK",
+      "institution": "PUMO TECHNOVATION",
+      "period": "July 2024",
+      "location": "CHENNAI"
+    }
+  ];
+  
+  // Projects
+  static const List<Map<String, String>> projects = [
+    {
+      "title": "Portfolio Website",
+      "description": "A personal portfolio website built with Flutter and hosted on Firebase.",
+      "link": "https://karthi-nexgen.tech/"
+    },
+  ];
+  
+  // Social Links Map
+  static const Map<String, String> socialLinks = {
+    "Email": "mailto:$email",
+    "Phone": "tel:$phone",
+    "LinkedIn": linkedinUrl,
+    "GitHub": githubUrl,
+  };
+  
   // Footer
   static const String footerTagline = 'Crafting beautiful Flutter applications\nfor mobile and web';
-  
-  // TODO: Add more personal information as needed
-  // TODO: Add project portfolio items
-  // TODO: Add testimonials
-  // TODO: Add certifications
 }
 
-/// Skills data structure
+/// Skills data structure for detailed skill representation
 class SkillData {
   final String name;
   final String category;
@@ -95,9 +195,36 @@ class ServiceData {
   });
 }
 
-// TODO: Add more data structures as needed for:
-// - Portfolio projects
-// - Testimonials
-// - Blog posts
-// - Certifications
-// - Education
+/// Project data structure
+class ProjectData {
+  final String title;
+  final String description;
+  final String? link;
+  final List<String>? techStack;
+  final String? imageUrl;
+  
+  const ProjectData({
+    required this.title,
+    required this.description,
+    this.link,
+    this.techStack,
+    this.imageUrl,
+  });
+}
+
+/// Education data structure
+class EducationData {
+  final String degree;
+  final String school;
+  final String period;
+  final String location;
+  final String score;
+  
+  const EducationData({
+    required this.degree,
+    required this.school,
+    required this.period,
+    required this.location,
+    required this.score,
+  });
+}

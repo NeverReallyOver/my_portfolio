@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:my_portfolio/constants.dart';
 import 'dart:math' as math;
 
+import 'package:my_portfolio/data/portfolio_data.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 class HeroSection extends StatefulWidget {
-  const HeroSection({super.key});
+  final Function(GlobalKey) onNavigate;
+  final Map<String, GlobalKey> sectionKeys;
+  
+  const HeroSection({
+    super.key,
+    required this.onNavigate,
+    required this.sectionKeys,
+  });
 
   @override
   State<HeroSection> createState() => _HeroSectionState();
@@ -183,13 +192,21 @@ class _HeroSectionState extends State<HeroSection>
   Widget _buildNavItem(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: InkWell(
-        onTap: () {},
-        child: Text(
-          text,
-          style: AppTextStyles.body.copyWith(
-            color: AppColors.textPrimary,
-            fontSize: 16,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: InkWell(
+          onTap: () {
+            final key = widget.sectionKeys[text];
+            if (key != null) {
+              widget.onNavigate(key);
+            }
+          },
+          child: Text(
+            text,
+            style: AppTextStyles.body.copyWith(
+              color: AppColors.textPrimary,
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -236,7 +253,7 @@ class _HeroSectionState extends State<HeroSection>
         
         // Name with animation
         Text(
-          'Your Name Here',
+          PortfolioData.name,
           style: AppTextStyles.heroTitle.copyWith(
             fontSize: isMobile ? 36 : 64,
           ),
@@ -279,7 +296,7 @@ class _HeroSectionState extends State<HeroSection>
             Icon(Icons.location_on, color: AppColors.accent, size: 20),
             const SizedBox(width: 8),
             Text(
-              'Your Location',
+              'Chennai, India',
               style: AppTextStyles.body.copyWith(fontSize: 14),
             ),
             const SizedBox(width: 24),
@@ -301,12 +318,23 @@ class _HeroSectionState extends State<HeroSection>
           children: [
             _buildGradientButton(
               'Let\'s Build Together',
-              () {},
+              () {
+                final contactKey = widget.sectionKeys['Contact'];
+                if (contactKey != null) {
+                  widget.onNavigate(contactKey);
+                }
+              },
               icon: Icons.arrow_forward,
             ),
             _buildOutlineButton(
               'View Resume',
-              () {},
+              () async {
+                // Open portfolio website
+                final Uri portfolioUri = Uri.parse(PortfolioData.portfolioUrl);
+                if (await canLaunchUrl(portfolioUri)) {
+                  await launchUrl(portfolioUri, mode: LaunchMode.externalApplication);
+                }
+              },
               icon: Icons.description,
             ),
           ],
@@ -317,9 +345,27 @@ class _HeroSectionState extends State<HeroSection>
         // Social links
         Row(
           children: [
-            _buildSocialIcon(Icons.code),
-            _buildSocialIcon(Icons.link),
-            _buildSocialIcon(Icons.email),
+            _buildSocialIcon(Icons.code, () async {
+              final Uri uri = Uri.parse(PortfolioData.githubUrl);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            }),
+            _buildSocialIcon(Icons.link, () async {
+              final Uri uri = Uri.parse(PortfolioData.portfolioUrl);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            }),
+            _buildSocialIcon(Icons.email, () async {
+              final Uri emailUri = Uri(
+                scheme: 'mailto',
+                path: PortfolioData.email,
+              );
+              if (await canLaunchUrl(emailUri)) {
+                await launchUrl(emailUri);
+              }
+            }),
           ],
         ),
       ],
@@ -382,14 +428,20 @@ class _HeroSectionState extends State<HeroSection>
                   ),
                   child: Center(
                     child: Image.asset(
-                      'assets/images/flutter_expertise.png',
+                      'assets/images/flutter_expertises.png',
                       width: 200,
                       height: 200,
+                      
                       errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.person,
-                          size: 120,
-                          color: AppColors.accent,
+                        return ShaderMask(
+                          shaderCallback: (bounds) => LinearGradient(
+                            colors: [AppColors.accent, AppColors.accentPurple],
+                          ).createShader(bounds),
+                          child: Icon(
+                            Icons.flutter_dash,
+                            size: 150,
+                            color: Colors.white,
+                          ),
                         );
                       },
                     ),
@@ -519,20 +571,23 @@ class _HeroSectionState extends State<HeroSection>
     );
   }
 
-  Widget _buildSocialIcon(IconData icon) {
+  Widget _buildSocialIcon(IconData icon, VoidCallback onTap) {
     return Padding(
       padding: const EdgeInsets.only(right: 16),
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
-        child: Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: AppColors.cardBg,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.accent.withOpacity(0.2)),
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: AppColors.cardBg,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.accent.withOpacity(0.2)),
+            ),
+            child: Icon(icon, color: AppColors.accent, size: 20),
           ),
-          child: Icon(icon, color: AppColors.accent, size: 20),
         ),
       ),
     );

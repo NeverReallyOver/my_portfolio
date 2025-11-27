@@ -12,7 +12,7 @@ class EducationSection extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 20 : 80,
-        vertical: isMobile ? 60 : 100,
+        vertical: isMobile ? 60 : 70,
       ),
       child: Column(
         children: [
@@ -37,16 +37,16 @@ class EducationSection extends StatelessWidget {
             ],
           ),
           
-          const SizedBox(height: 50),
+          const SizedBox(height: 35),
           
           // Services grid
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: isMobile ? 1 : 3,
-            mainAxisSpacing: 30,
-            crossAxisSpacing: 30,
-            childAspectRatio: isMobile ? 1.1 : 0.85,
+            mainAxisSpacing: 25,
+            crossAxisSpacing: 25,
+            childAspectRatio: isMobile ? 1.1 : 1.4,
             children: [
               _buildServiceCard(
                 'Mobile App Development',
@@ -137,18 +137,18 @@ class EducationSection extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: Container(
-        padding: const EdgeInsets.all(28),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: gradientColors[0].withOpacity(0.2),
           ),
           boxShadow: [
             BoxShadow(
               color: gradientColors[0].withOpacity(0.1),
-              blurRadius: 30,
-              spreadRadius: 5,
+              blurRadius: 20,
+              spreadRadius: 2,
             ),
           ],
         ),
@@ -157,41 +157,41 @@ class EducationSection extends StatelessWidget {
           children: [
             // Icon
             Container(
-              width: 70,
-              height: 70,
+              width: 56,
+              height: 56,
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: gradientColors),
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(14),
                 boxShadow: [
                   BoxShadow(
                     color: gradientColors[0].withOpacity(0.3),
-                    blurRadius: 15,
-                    spreadRadius: 2,
+                    blurRadius: 12,
+                    spreadRadius: 1,
                   ),
                 ],
               ),
-              child: Icon(icon, color: Colors.white, size: 35),
+              child: Icon(icon, color: Colors.white, size: 28),
             ),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             
             // Title
             Text(
               title,
-              style: AppTextStyles.subHeader.copyWith(fontSize: 20),
+              style: AppTextStyles.subHeader.copyWith(fontSize: 18),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             
             // Description
             Text(
               description,
-              style: AppTextStyles.body.copyWith(fontSize: 14),
+              style: AppTextStyles.body.copyWith(fontSize: 13),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
             
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             
             // Features
             Expanded(
@@ -204,10 +204,10 @@ class EducationSection extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.check_circle,
-                          size: 18,
+                          size: 16,
                           color: gradientColors[0],
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             feature,

@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Developer Portfolio',
+      title: 'Janakiraman\'s Portfolio',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,

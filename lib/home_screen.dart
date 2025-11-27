@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_portfolio/constants.dart';
+import 'package:my_portfolio/data/portfolio_data.dart';
 import 'package:my_portfolio/widgets/hero_section.dart';
 import 'package:my_portfolio/widgets/about_section.dart';
 import 'package:my_portfolio/widgets/experience_section.dart';
@@ -7,8 +8,31 @@ import 'package:my_portfolio/widgets/skills_section.dart';
 import 'package:my_portfolio/widgets/education_section.dart';
 import 'package:my_portfolio/widgets/contact_section.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  // Global keys for scrolling to sections
+  final GlobalKey aboutKey = GlobalKey();
+  final GlobalKey skillsKey = GlobalKey();
+  final GlobalKey experienceKey = GlobalKey();
+  final GlobalKey servicesKey = GlobalKey();
+  final GlobalKey contactKey = GlobalKey();
+
+  void scrollToSection(GlobalKey key) {
+    final context = key.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +40,47 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Full-screen hero section
-            const HeroSection(),
+            // Full-screen hero section with navigation callbacks
+            HeroSection(
+              onNavigate: scrollToSection,
+              sectionKeys: {
+                'About': aboutKey,
+                'Skills': skillsKey,
+                'Experience': experienceKey,
+                'Services': servicesKey,
+                'Contact': contactKey,
+              },
+            ),
             
             // About section
-            const AboutSection(),
+            Container(
+              key: aboutKey,
+              child: const AboutSection(),
+            ),
             
             // Skills section
-            const SkillsSection(),
+            Container(
+              key: skillsKey,
+              child: const SkillsSection(),
+            ),
             
             // Experience section
-            const ExperienceSection(),
+            Container(
+              key: experienceKey,
+              child: const ExperienceSection(),
+            ),
             
             // Services section
-            const EducationSection(),
+            Container(
+              key: servicesKey,
+              child: const EducationSection(),
+            ),
             
             // Contact section
-            const ContactSection(),
+            Container(
+              key: contactKey,
+              child: const ContactSection(),
+            ),
             
             // Footer
             _buildFooter(),
@@ -88,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Crafting beautiful Flutter applications\nfor mobile and web',
+                      PortfolioData.footerTagline,
                       style: AppTextStyles.body.copyWith(fontSize: 14),
                     ),
                   ],
@@ -118,7 +166,7 @@ class HomeScreen extends StatelessWidget {
           // Copyright
           Center(
             child: Text(
-              '© ${DateTime.now().year} Your Name. Built with Flutter 💙',
+              '© ${DateTime.now().year} ${PortfolioData.name}. Built with Flutter 💙',
               style: AppTextStyles.body.copyWith(
                 fontSize: 12,
                 color: AppColors.textSecondary,
