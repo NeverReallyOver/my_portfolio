@@ -13,20 +13,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Janakiraman Portfolio',
+      title: 'Flutter Developer Portfolio',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppColors.primary,
         colorScheme: ColorScheme.dark(
           primary: AppColors.accent,
-          secondary: AppColors.secondary,
-          surface: AppColors.primary,
+          secondary: AppColors.accentPurple,
+          surface: AppColors.cardBg,
           onSurface: AppColors.textPrimary,
         ),
-        textTheme: Theme.of(context).textTheme.apply(
-          bodyColor: AppColors.textPrimary,
-          displayColor: AppColors.textPrimary,
+        textTheme: GoogleFonts.interTextTheme(
+          Theme.of(context).textTheme.apply(
+            bodyColor: AppColors.textPrimary,
+            displayColor: AppColors.textPrimary,
+          ),
         ),
       ),
       home: const HomeScreen(),

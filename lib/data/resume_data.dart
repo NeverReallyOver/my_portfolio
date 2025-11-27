@@ -100,5 +100,7 @@ class ResumeData {
   static const Map<String, String> socialLinks = {
     "Email": "mailto:$email",
     "Phone": "tel:$phone",
+    "Linkedin": "https://www.linkedin.com/in/janakiraman-velayutham-6507bb208",
+    "Github": "https://github.com/NeverReallyOver",
   };
 }
