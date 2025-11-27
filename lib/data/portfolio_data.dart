@@ -22,7 +22,8 @@ class PortfolioData {
   // Social Links
   static const String githubUrl = 'https://github.com/NeverReallyOver';
   static const String linkedinUrl = 'https://www.linkedin.com/in/janakiraman-velayutham-6507bb208';
-  static const String portfolioUrl = 'https://karthi-nexgen.tech/';
+  static const String instagramUrl = 'https://janakiraman-portfolio.web.app/';
+  static const String resumeUrl = 'https://drive.google.com/file/d/1mmDdBvVHjD62fZEM_xfYCkWxILNzrxpm/view?usp=sharing';
   
   // Stats
   static const String yearsExperience = '1+';
@@ -39,11 +40,9 @@ class PortfolioData {
   
   // Skills
   static const List<String> skills = [
-    "C", "C++", "JAVA", "MySQL", "HTML", "CSS", 
-    "Flutter", "Dart", "JDBC", "AWT", 
-    "Java Networking - Socket Programming",
-    "Networking, Firewall - VPN",
-    "Scrum", "Agile methodology"
+    "JAVA", "MySQL", "HTML", "CSS", 
+    "Flutter", "Dart", "Vue", "React", 
+    "Web Socket",
   ];
   
   // Languages
@@ -75,17 +74,6 @@ class PortfolioData {
           "• Created and edited documents, reports, and presentations using MS Office Suite.\n"
           "• Managed office supplies inventory for seamless operations"
     },
-    {
-      "role": "ADMIN-EXECUTIVE",
-      "company": "MOZHITHI ENTERPRISES",
-      "period": "September 2022 – May 2023",
-      "location": "Singaperumal Koil",
-      "description": 
-          "Desktop support.\n"
-          "• Troubleshooting all network & printer connectivity.\n"
-          "• All kinds of Desktop issues troubleshooting.\n"
-          "• Established and maintained relationships with suppliers and contractors."
-    }
   ];
   
   // Education
@@ -128,7 +116,7 @@ class PortfolioData {
     {
       "title": "Portfolio Website",
       "description": "A personal portfolio website built with Flutter and hosted on Firebase.",
-      "link": "https://karthi-nexgen.tech/"
+      "link": "https://janakiraman-portfolio.web.app/"
     },
   ];
   

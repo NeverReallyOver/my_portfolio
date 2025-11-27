@@ -184,11 +184,11 @@ class _ContactSectionState extends State<ContactSection> {
               'LinkedIn',
               () => _launchUrl(PortfolioData.linkedinUrl),
             ),
-            _buildSocialButton(
-              Icons.link,
-              'Portfolio',
-              () => _launchUrl(PortfolioData.portfolioUrl),
-            ),
+            // _buildSocialButton(
+            //   Icons.link,
+            //   'Instagram',
+            //   () => _launchUrl(PortfolioData.portfolioUrl),
+            // ),
           ],
         ),
       ],

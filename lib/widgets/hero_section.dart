@@ -330,7 +330,7 @@ class _HeroSectionState extends State<HeroSection>
               'View Resume',
               () async {
                 // Open portfolio website
-                final Uri portfolioUri = Uri.parse(PortfolioData.portfolioUrl);
+                final Uri portfolioUri = Uri.parse(PortfolioData.resumeUrl);
                 if (await canLaunchUrl(portfolioUri)) {
                   await launchUrl(portfolioUri, mode: LaunchMode.externalApplication);
                 }
@@ -352,7 +352,7 @@ class _HeroSectionState extends State<HeroSection>
               }
             }),
             _buildSocialIcon(Icons.link, () async {
-              final Uri uri = Uri.parse(PortfolioData.portfolioUrl);
+              final Uri uri = Uri.parse(PortfolioData.linkedinUrl);
               if (await canLaunchUrl(uri)) {
                 await launchUrl(uri, mode: LaunchMode.externalApplication);
               }
