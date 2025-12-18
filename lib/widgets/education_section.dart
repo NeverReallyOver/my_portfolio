@@ -17,24 +17,41 @@ class EducationSection extends StatelessWidget {
       child: Column(
         children: [
           // Section header
-          Column(
+          Row(
             children: [
               Text(
                 'Services I Offer',
                 style: AppTextStyles.sectionTitle.copyWith(
                   fontSize: isMobile ? 32 : 40,
                 ),
-                textAlign: TextAlign.center,
               ),
-              
-              const SizedBox(height: 12),
-              
-              Text(
-                'Professional Flutter development services tailored to your needs',
-                style: AppTextStyles.body,
-                textAlign: TextAlign.center,
+              const SizedBox(width: 20),
+              Expanded(
+                child: Container(
+                  height: 2,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.accentPurple,
+                        AppColors.accentPurple.withOpacity(0),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ],
+          ),
+          
+          const SizedBox(height: 12),
+          
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Professional development services tailored to your needs',
+              style: AppTextStyles.body.copyWith(
+                fontSize: isMobile ? 14 : 16,
+              ),
+            ),
           ),
           
           const SizedBox(height: 35),
@@ -43,79 +60,79 @@ class EducationSection extends StatelessWidget {
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: isMobile ? 1 : 3,
+            crossAxisCount: isMobile ? 1 : 4,
             mainAxisSpacing: 25,
             crossAxisSpacing: 25,
-            childAspectRatio: isMobile ? 1.1 : 1.4,
+            childAspectRatio: isMobile ? 1.15 : 0.85,
             children: [
               _buildServiceCard(
-                'Mobile App Development',
-                'Native iOS and Android apps using Flutter with top-tier performance and native feel.',
+                'Flutter Mobile Development',
+                'Build cross-platform mobile applications for iOS and Android using Flutter and Dart with native performance.',
                 [
                   'Cross-platform development',
-                  'Native performance',
-                  'App/Play Store deployment',
-                  'Ongoing maintenance',
+                  'State management (Provider/Riverpod)',
+                  'UI/UX implementation',
+                  'App store deployment',
                 ],
                 Icons.phone_android,
                 [AppColors.accent, AppColors.accentPurple],
               ),
               _buildServiceCard(
-                'Web Application Development',
-                'Modern, responsive web applications built with Flutter Web for seamless user experience.',
+                'Web Development',
+                'Create responsive and modern web applications using HTML, CSS, JavaScript, Vue.js, and React.',
                 [
                   'Responsive design',
-                  'PWA development',
-                  'SEO optimization',
-                  'Fast loading times',
+                  'Frontend frameworks',
+                  'Modern UI/UX',
+                  'Performance optimization',
                 ],
                 Icons.web,
                 [AppColors.accentPurple, AppColors.accentPink],
               ),
               _buildServiceCard(
-                'UI/UX Implementation',
-                'Pixel-perfect implementation of designs with smooth animations and interactions.',
+                'Java Backend Development',
+                'Full-stack Java development with database integration and RESTful API implementation.',
                 [
-                  'Design to code',
-                  'Custom animations',
-                  'Micro-interactions',
-                  'Accessibility compliance',
+                  'Java programming',
+                  'MySQL database design',
+                  'REST API development',
+                  'Backend architecture',
                 ],
-                Icons.design_services,
+                Icons.code,
                 [AppColors.accentPink, AppColors.accent],
               ),
               _buildServiceCard(
-                'API Integration & Backend',
-                'Seamless integration with REST APIs, Firebase, and third-party services.',
+                'Real-time Applications',
+                'Develop real-time features using WebSocket technology for live data communication.',
                 [
-                  'REST API integration',
-                  'Firebase setup',
-                  'Real-time features',
-                  'Cloud functions',
+                  'WebSocket implementation',
+                  'Real-time data sync',
+                  'Live notifications',
+                  'Interactive features',
                 ],
                 Icons.cloud_sync,
                 [AppColors.accent, AppColors.accentPurple],
               ),
               _buildServiceCard(
-                'App Optimization',
-                'Performance tuning and optimization for faster, smoother applications.',
+                'API Integration',
+                'Seamless integration with REST APIs, Firebase, and third-party services for your applications.',
                 [
-                  'Performance profiling',
-                  'Code optimization',
-                  'Bundle size reduction',
-                  'Memory management',
+                  'REST API integration',
+                  'Firebase services',
+                  'Third-party APIs',
+                  'Data management',
                 ],
-                Icons.speed,
+                Icons.api,
                 [AppColors.accentPurple, AppColors.accentPink],
               ),
               _buildServiceCard(
                 'Consultation & Support',
-                'Expert Flutter consultation and ongoing technical support for your projects.',
+                'Expert consultation and ongoing technical support for your development projects.',
                 [
                   'Architecture planning',
                   'Code review',
                   'Technical guidance',
-                  '24/7 support',
+                  'Project support',
                 ],
                 Icons.support_agent,
                 [AppColors.accentPink, AppColors.accent],
@@ -136,82 +153,131 @@ class EducationSection extends StatelessWidget {
   ) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: Container(
-        padding: const EdgeInsets.all(20),
+      child: AnimatedContainer(
+        duration: AppDurations.medium,
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: gradientColors[0].withOpacity(0.2),
+            color: gradientColors[0].withOpacity(0.3),
+            width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: gradientColors[0].withOpacity(0.1),
-              blurRadius: 20,
+              color: gradientColors[0].withOpacity(0.15),
+              blurRadius: 25,
               spreadRadius: 2,
             ),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Icon
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: gradientColors),
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(
-                    color: gradientColors[0].withOpacity(0.3),
-                    blurRadius: 12,
-                    spreadRadius: 1,
+            // Icon with background effect
+            Stack(
+              children: [
+                Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        gradientColors[0].withOpacity(0.2),
+                        gradientColors[1].withOpacity(0.1),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(18),
                   ),
-                ],
-              ),
-              child: Icon(icon, color: Colors.white, size: 28),
+                ),
+                Positioned(
+                  top: 3,
+                  left: 3,
+                  child: Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: gradientColors,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: gradientColors[0].withOpacity(0.5),
+                          blurRadius: 20,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Icon(icon, color: Colors.white, size: 32),
+                  ),
+                ),
+              ],
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             
             // Title
             Text(
               title,
-              style: AppTextStyles.subHeader.copyWith(fontSize: 18),
+              style: AppTextStyles.subHeader.copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
             
-            const SizedBox(height: 10),
+            const SizedBox(height: 14),
             
             // Description
             Text(
               description,
-              style: AppTextStyles.body.copyWith(fontSize: 13),
+              style: AppTextStyles.body.copyWith(
+                fontSize: 14,
+                height: 1.6,
+              ),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             
-            // Features
-            Expanded(
+            // Features - Limited to 3 with scroll if needed
+            Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: features.map((feature) {
+                mainAxisSize: MainAxisSize.min,
+                children: features.take(3).map((feature) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.check_circle,
-                          size: 16,
-                          color: gradientColors[0],
+                        Container(
+                          margin: const EdgeInsets.only(top: 6),
+                          width: 5,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: gradientColors),
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             feature,
-                            style: AppTextStyles.body.copyWith(fontSize: 13),
+                            style: AppTextStyles.body.copyWith(
+                              fontSize: 13,
+                              height: 1.4,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -221,28 +287,46 @@ class EducationSection extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 16),
+            const Spacer(),
             
             // Get Started button
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 12,
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: gradientColors),
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Get Started',
-                    style: AppTextStyles.button.copyWith(fontSize: 14),
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: gradientColors,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.arrow_forward, size: 16, color: Colors.white),
-                ],
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: gradientColors[0].withOpacity(0.4),
+                      blurRadius: 15,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Get Started',
+                      style: AppTextStyles.button.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.arrow_forward, size: 16, color: Colors.white),
+                  ],
+                ),
               ),
             ),
           ],

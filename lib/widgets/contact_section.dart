@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_portfolio/constants.dart';
 import 'package:my_portfolio/data/portfolio_data.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -17,6 +19,12 @@ class _ContactSectionState extends State<ContactSection> {
   final _messageController = TextEditingController();
   
   bool _isHoveredSubmit = false;
+  bool _isLoading = false;
+  
+  // Formspree endpoint - Replace with your Formspree form ID
+  // Get your free form ID from https://formspree.io
+  // Example: 'https://formspree.io/f/YOUR_FORM_ID'
+  static const String _formspreeEndpoint = 'https://formspree.io/f/xbdrrqbr';
 
   @override
   void dispose() {
@@ -71,7 +79,7 @@ class _ContactSectionState extends State<ContactSection> {
           Column(
             children: [
               Text(
-                'Let\'s Work Together',
+                'Let\'s Build Something Amazing',
                 style: AppTextStyles.sectionTitle.copyWith(
                   fontSize: isMobile ? 32 : 48,
                 ),
@@ -81,8 +89,8 @@ class _ContactSectionState extends State<ContactSection> {
               const SizedBox(height: 12),
               
               Text(
-                'Have a project in mind? Let\'s create something amazing together!',
-                style: AppTextStyles.body.copyWith(fontSize: 18),
+                'Ready to bring your idea to life? Get in touch and let\'s discuss your project!',
+                style: AppTextStyles.body.copyWith(fontSize: isMobile ? 16 : 18),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -132,7 +140,7 @@ class _ContactSectionState extends State<ContactSection> {
         const SizedBox(height: 24),
         
         Text(
-          'I\'m always open to discussing new projects, creative ideas, or opportunities to be part of your vision.',
+          'I\'m available for freelance projects and always excited to work on new challenges. Whether you need a complete app, UI/UX design, or consultation, I\'m here to help bring your vision to reality.',
           style: AppTextStyles.body,
         ),
         
@@ -355,18 +363,9 @@ class _ContactSectionState extends State<ContactSection> {
               onExit: (_) => setState(() => _isHoveredSubmit = false),
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                onTap: () {
+                onTap: _isLoading ? null : () async {
                   if (_formKey.currentState!.validate()) {
-                    // TODO: Implement form submission
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Thank you! I\'ll get back to you soon.',
-                          style: AppTextStyles.body.copyWith(color: Colors.white),
-                        ),
-                        backgroundColor: AppColors.accent,
-                      ),
-                    );
+                    await _submitForm();
                   }
                 },
                 child: AnimatedContainer(
@@ -374,9 +373,12 @@ class _ContactSectionState extends State<ContactSection> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [AppColors.accent, AppColors.accentPurple],
-                    ),
+                    gradient: _isLoading 
+                        ? null 
+                        : LinearGradient(
+                            colors: [AppColors.accent, AppColors.accentPurple],
+                          ),
+                    color: _isLoading ? AppColors.accent.withOpacity(0.7) : null,
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
@@ -386,17 +388,26 @@ class _ContactSectionState extends State<ContactSection> {
                       ),
                     ],
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Send Message',
-                        style: AppTextStyles.button.copyWith(fontSize: 16),
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.send, size: 20, color: Colors.white),
-                    ],
-                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Send Message',
+                              style: AppTextStyles.button.copyWith(fontSize: 16),
+                            ),
+                            const SizedBox(width: 8),
+                            const Icon(Icons.send, size: 20, color: Colors.white),
+                          ],
+                        ),
                 ),
               ),
             ),
@@ -462,10 +473,112 @@ class _ContactSectionState extends State<ContactSection> {
             if (value == null || value.isEmpty) {
               return 'This field is required';
             }
+            if (keyboardType == TextInputType.emailAddress) {
+              if (!value.contains('@') || !value.contains('.')) {
+                return 'Please enter a valid email';
+              }
+            }
             return null;
           },
         ),
       ],
     );
+  }
+
+  Future<void> _submitForm() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Option 1: Using Formspree (Free - 50 submissions/month)
+      // Replace YOUR_FORM_ID with your actual Formspree form ID from https://formspree.io
+      final response = await http.post(
+        Uri.parse(_formspreeEndpoint),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'message': _messageController.text,
+          '_subject': 'Portfolio Contact Form - ${_nameController.text}',
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Success
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.white),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Message sent successfully! I\'ll get back to you soon.',
+                      style: AppTextStyles.body.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          
+          // Clear form
+          _nameController.clear();
+          _emailController.clear();
+          _messageController.clear();
+        }
+      } else {
+        // Fallback to mailto if Formspree fails
+        await _sendViaMailto();
+      }
+    } catch (e) {
+      // Fallback to mailto if there's an error
+      await _sendViaMailto();
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _sendViaMailto() async {
+    // Fallback: Use mailto link
+    final subject = Uri.encodeComponent('Portfolio Contact - ${_nameController.text}');
+    final body = Uri.encodeComponent(
+      'Name: ${_nameController.text}\n'
+      'Email: ${_emailController.text}\n\n'
+      'Message:\n${_messageController.text}',
+    );
+    
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: PortfolioData.email,
+      query: 'subject=$subject&body=$body',
+    );
+    
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Opening email client...',
+              style: AppTextStyles.body.copyWith(color: Colors.white),
+            ),
+            backgroundColor: AppColors.accent,
+          ),
+        );
+      }
+    }
   }
 }

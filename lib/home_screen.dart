@@ -7,6 +7,8 @@ import 'package:my_portfolio/widgets/experience_section.dart';
 import 'package:my_portfolio/widgets/skills_section.dart';
 import 'package:my_portfolio/widgets/education_section.dart';
 import 'package:my_portfolio/widgets/contact_section.dart';
+import 'package:my_portfolio/widgets/projects_section.dart';
+import 'package:my_portfolio/widgets/scroll_animation_wrapper.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,10 +20,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Global keys for scrolling to sections
   final GlobalKey aboutKey = GlobalKey();
-  final GlobalKey skillsKey = GlobalKey();
-  final GlobalKey experienceKey = GlobalKey();
   final GlobalKey servicesKey = GlobalKey();
+  final GlobalKey skillsKey = GlobalKey();
+  final GlobalKey projectsKey = GlobalKey();
+  final GlobalKey experienceKey = GlobalKey();
   final GlobalKey contactKey = GlobalKey();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   void scrollToSection(GlobalKey key) {
     final context = key.currentContext;
@@ -29,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Scrollable.ensureVisible(
         context,
         duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
+        curve: Curves.easeInOutCubic,
       );
     }
   }
@@ -38,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        controller: _scrollController,
+        physics: const ClampingScrollPhysics(),
         child: Column(
           children: [
             // Full-screen hero section with navigation callbacks
@@ -45,45 +57,80 @@ class _HomeScreenState extends State<HomeScreen> {
               onNavigate: scrollToSection,
               sectionKeys: {
                 'About': aboutKey,
-                'Skills': skillsKey,
-                'Experience': experienceKey,
                 'Services': servicesKey,
+                'Skills': skillsKey,
+                'Projects': projectsKey,
+                'Experience': experienceKey,
                 'Contact': contactKey,
               },
             ),
             
-            // About section
-            Container(
-              key: aboutKey,
-              child: const AboutSection(),
+            // About section with animation
+            ScrollAnimationWrapper(
+              animationType: AnimationType.fadeInUp,
+              delay: 0.1,
+              child: Container(
+                key: aboutKey,
+                child: const AboutSection(),
+              ),
             ),
             
-            // Skills section
-            Container(
-              key: skillsKey,
-              child: const SkillsSection(),
+            // Services section with animation
+            ScrollAnimationWrapper(
+              animationType: AnimationType.scale,
+              delay: 0.2,
+              child: Container(
+                key: servicesKey,
+                child: const EducationSection(),
+              ),
             ),
             
-            // Experience section
-            Container(
-              key: experienceKey,
-              child: const ExperienceSection(),
+            // Skills section with animation
+            ScrollAnimationWrapper(
+              animationType: AnimationType.fadeInLeft,
+              delay: 0.2,
+              child: Container(
+                key: skillsKey,
+                child: const SkillsSection(),
+              ),
             ),
             
-            // Services section
-            Container(
-              key: servicesKey,
-              child: const EducationSection(),
+            // Projects section with animation
+            ScrollAnimationWrapper(
+              animationType: AnimationType.fadeInRight,
+              delay: 0.1,
+              child: Container(
+                key: projectsKey,
+                child: const ProjectsSection(),
+              ),
             ),
             
-            // Contact section
-            Container(
-              key: contactKey,
-              child: const ContactSection(),
+            // Experience section with animation
+            ScrollAnimationWrapper(
+              animationType: AnimationType.fadeInUp,
+              delay: 0.1,
+              child: Container(
+                key: experienceKey,
+                child: const ExperienceSection(),
+              ),
             ),
             
-            // Footer
-            _buildFooter(),
+            // Contact section with animation
+            ScrollAnimationWrapper(
+              animationType: AnimationType.fadeInUp,
+              delay: 0.1,
+              child: Container(
+                key: contactKey,
+                child: const ContactSection(),
+              ),
+            ),
+            
+            // Footer with animation
+            ScrollAnimationWrapper(
+              animationType: AnimationType.fadeIn,
+              delay: 0.1,
+              child: _buildFooter(),
+            ),
           ],
         ),
       ),
@@ -137,7 +184,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 16),
                     Text(
                       PortfolioData.footerTagline,
-                      style: AppTextStyles.body.copyWith(fontSize: 14),
+                      style: AppTextStyles.body.copyWith(
+                        fontSize: 14,
+                        height: 1.6,
+                      ),
                     ),
                   ],
                 ),

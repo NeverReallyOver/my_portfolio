@@ -4,16 +4,16 @@
 class PortfolioData {
   // Personal Information
   static const String name = 'JANAKIRAMAN VELAYUTHAM';
-  static const String title = 'Associate Java Developer | Flutter Developer';
+  static const String title = 'Freelance Flutter Developer';
   static const String tagline = 'Available for Mobile & Web Projects';
   static const String fullAddress = 'No.14/9, Mangalapuram 1st Street, West Tambaram, Chennai, India';
   static const String description =
-      'Associate Java Developer with experience in software and network support. '
-      'Skilled in Java development and Flutter mobile development, with expertise in collaboration across diverse teams. '
-      'Proficient in troubleshooting and delivering reliable IT solutions.';
+      'I\'m a passionate Flutter developer specializing in creating beautiful, high-performance cross-platform applications. '
+      'With expertise in mobile and web development, I help businesses transform their ideas into stunning digital experiences. '
+      'I focus on clean code, modern UI/UX design, and delivering solutions that exceed expectations.';
   
   static const String location = 'Chennai, India';
-  static const String availability = 'Freelance Available';
+  static const String availability = 'Available for Freelance Projects';
   
   // Contact Information
   static const String email = 'vjanakiraman03@gmail.com';
@@ -31,12 +31,12 @@ class PortfolioData {
   static const String clientSatisfaction = '100%';
   
   // About Me
-  static const String aboutTitle = 'Flutter Development Specialist';
+  static const String aboutTitle = 'Freelance Flutter Developer';
   static const String aboutDescription1 =
-      'I\'m a passionate Flutter developer with expertise in building high-quality, cross-platform mobile and web applications. My journey in Flutter development has enabled me to create scalable, performant solutions that deliver exceptional user experiences.';
+      'I transform your ideas into stunning, high-performance mobile and web applications. As a freelance Flutter developer, I specialize in creating cross-platform solutions that work seamlessly on iOS, Android, and Web.';
   
   static const String aboutDescription2 =
-      'With a strong focus on clean architecture, state management, and modern development practices, I transform ideas into beautiful, functional applications that work seamlessly across iOS, Android, and Web platforms.';
+      'My approach combines modern UI/UX design principles with clean, maintainable code. I work closely with clients to understand their vision and deliver solutions that not only meet but exceed expectations. Whether you need a complete app from scratch or enhancements to existing projects, I\'m here to help.';
   
   // Skills
   static const List<String> skills = [
@@ -53,13 +53,29 @@ class PortfolioData {
   // Experience
   static const List<Map<String, String>> experience = [
     {
-      "role": "Flutter Dev - Intern",
-      "company": "ZEBU SHARE AND WEALTH MANAGEMENTS PVT LTD",
-      "period": "February 2025 – present",
+      "role": "Mobile App Developer",
+      "company": "Zebu Share And Wealth Managements Pvt Ltd",
+      "period": "Feb 2024 – Present",
       "location": "Chennai",
-      "description": "Building the UI of a mobile application for Android and iOS",
+      "description": 
+          "Leading mobile app development for MYNT trading platform using Flutter and Dart.\n"
+          "• Redesigned MYNT trading app UI using Flutter and Dart.\n"
+          "• Built Pay-off and Portfolio feature for multi‑stock management.\n"
+          "• Led mobile‑to‑web conversion to expand accessibility.\n"
+          "• Integrated RESTful APIs and models for real‑time data.\n"
+          "• Optimized performance using Provider and Riverpod.",
       "current": "true"
     },
+    // {
+    //   "role": "UI Designer – Intern",
+    //   "company": "NETAXIS IT SOLUTIONS PRIVATE LIMITED",
+    //   "period": "Nov 2023 – May 2024",
+    //   "location": "Chennai",
+    //   "description": 
+    //       "Developed responsive web interfaces and trained in modern UI design technologies.\n"
+    //       "• Trained in UI design: HTML, SCSS, Bootstrap, JavaScript.\n"
+    //       "• Developed responsive web interfaces."
+    // },
     {
       "role": "ADMIN - EXECUTIVE",
       "company": "CAPRICORN FOOD PRODUCTS INDIA LIMITED",
@@ -114,9 +130,18 @@ class PortfolioData {
   // Projects
   static const List<Map<String, String>> projects = [
     {
+      "title": "MYNT Trading Platform",
+      "description": "Redesigned and developed a comprehensive trading platform mobile app using Flutter. Features include real-time portfolio management, multi-stock tracking, and seamless web integration.",
+      "link": "",
+      "tech": "Flutter, Dart, REST APIs, Provider, Riverpod",
+      "type": "Mobile App"
+    },
+    {
       "title": "Portfolio Website",
-      "description": "A personal portfolio website built with Flutter and hosted on Firebase.",
-      "link": "https://janakiraman-portfolio.web.app/"
+      "description": "A modern, responsive portfolio website built with Flutter Web, showcasing professional work and services with smooth animations and modern UI.",
+      "link": "https://janakiraman-portfolio.web.app/",
+      "tech": "Flutter Web, Firebase Hosting",
+      "type": "Web App"
     },
   ];
   
@@ -129,7 +154,47 @@ class PortfolioData {
   };
   
   // Footer
-  static const String footerTagline = 'Crafting beautiful Flutter applications\nfor mobile and web';
+  static const String footerTagline = 'Ready to bring your ideas to life?\nLet\'s create something amazing together!';
+  
+  // Services for Freelancing
+  static const List<Map<String, dynamic>> services = [
+    {
+      "title": "Flutter Mobile Development",
+      "description": "Build native-quality iOS and Android apps with a single codebase",
+      "features": ["Cross-platform development", "State management", "UI/UX design", "App store deployment"],
+      "icon": "phone_android"
+    },
+    {
+      "title": "Flutter Web Development",
+      "description": "Create responsive, fast web applications with Flutter Web",
+      "features": ["Responsive design", "Performance optimization", "Modern UI/UX", "SEO friendly"],
+      "icon": "web"
+    },
+    {
+      "title": "UI/UX Design & Implementation",
+      "description": "Beautiful, intuitive interfaces that users love",
+      "features": ["Custom UI design", "Material Design", "Animations", "User experience"],
+      "icon": "palette"
+    },
+    {
+      "title": "API Integration",
+      "description": "Seamless integration with REST APIs and third-party services",
+      "features": ["REST API integration", "Firebase services", "Real-time data", "Authentication"],
+      "icon": "api"
+    },
+    {
+      "title": "App Maintenance & Support",
+      "description": "Ongoing support and updates for your applications",
+      "features": ["Bug fixes", "Feature updates", "Performance optimization", "Technical support"],
+      "icon": "support_agent"
+    },
+    {
+      "title": "Consultation & Code Review",
+      "description": "Expert guidance for your Flutter projects",
+      "features": ["Architecture planning", "Code review", "Best practices", "Technical guidance"],
+      "icon": "code"
+    },
+  ];
 }
 
 /// Skills data structure for detailed skill representation

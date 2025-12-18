@@ -14,17 +14,27 @@ class _SkillsSectionState extends State<SkillsSection> {
   final categories = ['All', 'Mobile', 'Web', 'Backend', 'Tools'];
   
   final skills = [
-    {'name': 'Flutter', 'category': 'Mobile', 'level': 0.95, 'icon': Icons.flutter_dash},
-    {'name': 'Dart', 'category': 'Mobile', 'level': 0.90, 'icon': Icons.code},
-    {'name': 'Firebase', 'category': 'Backend', 'level': 0.85, 'icon': Icons.cloud},
-    {'name': 'REST APIs', 'category': 'Backend', 'level': 0.90, 'icon': Icons.api},
-    {'name': 'State Management', 'category': 'Mobile', 'level': 0.88, 'icon': Icons.settings},
-    {'name': 'Responsive Design', 'category': 'Web', 'level': 0.92, 'icon': Icons.devices},
+    // Mobile Development
+    {'name': 'Flutter', 'category': 'Mobile', 'level': 0.90, 'icon': Icons.flutter_dash},
+    {'name': 'Dart', 'category': 'Mobile', 'level': 0.88, 'icon': Icons.code},
+    {'name': 'Provider', 'category': 'Mobile', 'level': 0.85, 'icon': Icons.settings},
+    {'name': 'Riverpod', 'category': 'Mobile', 'level': 0.80, 'icon': Icons.settings_applications},
+    
+    // Backend & Database
+    {'name': 'Java', 'category': 'Backend', 'level': 0.85, 'icon': Icons.code},
+    {'name': 'MySQL', 'category': 'Backend', 'level': 0.82, 'icon': Icons.storage},
+    {'name': 'REST APIs', 'category': 'Backend', 'level': 0.88, 'icon': Icons.api},
+    {'name': 'Web Socket', 'category': 'Backend', 'level': 0.80, 'icon': Icons.cloud_sync},
+    
+    // Web Development
+    {'name': 'HTML', 'category': 'Web', 'level': 0.90, 'icon': Icons.code},
+    {'name': 'CSS', 'category': 'Web', 'level': 0.88, 'icon': Icons.palette},
+    {'name': 'Vue.js', 'category': 'Web', 'level': 0.75, 'icon': Icons.web},
+    {'name': 'React', 'category': 'Web', 'level': 0.70, 'icon': Icons.web_asset},
+    
+    // Tools
     {'name': 'Git', 'category': 'Tools', 'level': 0.85, 'icon': Icons.source},
-    {'name': 'UI/UX Design', 'category': 'Web', 'level': 0.80, 'icon': Icons.palette},
-    // Placeholder for future skills
-    {'name': 'GraphQL', 'category': 'Backend', 'level': 0.70, 'icon': Icons.api, 'placeholder': true},
-    {'name': 'CI/CD', 'category': 'Tools', 'level': 0.75, 'icon': Icons.build, 'placeholder': true},
+    {'name': 'Firebase', 'category': 'Tools', 'level': 0.80, 'icon': Icons.cloud},
   ];
 
   @override
@@ -46,20 +56,41 @@ class _SkillsSectionState extends State<SkillsSection> {
           // Section header
           Column(
             children: [
-              Text(
-                'Technologies I Master',
-                style: AppTextStyles.sectionTitle.copyWith(
-                  fontSize: isMobile ? 32 : 40,
-                ),
-                textAlign: TextAlign.center,
+              Row(
+                children: [
+                  Text(
+                    'Technologies I Master',
+                    style: AppTextStyles.sectionTitle.copyWith(
+                      fontSize: isMobile ? 32 : 40,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.accent,
+                            AppColors.accent.withOpacity(0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               
               const SizedBox(height: 12),
               
-              Text(
-                'A comprehensive toolkit of modern technologies and frameworks',
-                style: AppTextStyles.body,
-                textAlign: TextAlign.center,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'A comprehensive toolkit of modern technologies and frameworks I work with',
+                  style: AppTextStyles.body.copyWith(
+                    fontSize: isMobile ? 14 : 16,
+                  ),
+                ),
               ),
               
               const SizedBox(height: 35),
@@ -88,43 +119,12 @@ class _SkillsSectionState extends State<SkillsSection> {
                 skill['name'] as String,
                 skill['level'] as double,
                 skill['icon'] as IconData,
-                isPlaceholder: skill['placeholder'] == true,
+                isPlaceholder: false,
               );
             },
           ),
           
           const SizedBox(height: 40),
-          
-          // Note about adding more skills
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.accentPurple.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: AppColors.accentPurple.withOpacity(0.3),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.info_outline,
-                  color: AppColors.accentPurple,
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Always learning and expanding my tech stack. More skills coming soon!',
-                    style: AppTextStyles.body.copyWith(
-                      color: AppColors.accentPurple,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

@@ -78,25 +78,46 @@ class AboutSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: AppColors.accentPurple.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            'Crafting Digital Excellence',
-            style: AppTextStyles.accent.copyWith(
-              color: AppColors.accentPurple,
+            gradient: LinearGradient(
+              colors: [
+                AppColors.accentPurple.withOpacity(0.2),
+                AppColors.accent.withOpacity(0.1),
+              ],
             ),
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(
+              color: AppColors.accentPurple.withOpacity(0.3),
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.code,
+                color: AppColors.accentPurple,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'About Me',
+                style: AppTextStyles.accent.copyWith(
+                  color: AppColors.accentPurple,
+                  fontSize: 14,
+                ),
+              ),
+            ],
           ),
         ),
         
-        const SizedBox(height: 24),
+        const SizedBox(height: 28),
         
         Text(
-          PortfolioData.aboutTitle,
+          'Freelance Flutter Developer',
           style: AppTextStyles.subHeader.copyWith(
-            fontSize: isMobile ? 24 : 28,
+            fontSize: isMobile ? 26 : 32,
+            fontWeight: FontWeight.bold,
           ),
         ),
         
@@ -104,20 +125,72 @@ class AboutSection extends StatelessWidget {
         
         Text(
           PortfolioData.aboutDescription1,
-          style: AppTextStyles.body,
+          style: AppTextStyles.body.copyWith(
+            fontSize: isMobile ? 15 : 17,
+            height: 1.8,
+          ),
         ),
         
         const SizedBox(height: 16),
         
         Text(
           PortfolioData.aboutDescription2,
-          style: AppTextStyles.body,
+          style: AppTextStyles.body.copyWith(
+            fontSize: isMobile ? 15 : 17,
+            height: 1.8,
+          ),
         ),
         
         const SizedBox(height: 24),
         
+        // Key Highlights
+        _buildHighlights(isMobile),
+        
+        const SizedBox(height: 32),
+        
         _buildQuickStats(),
       ],
+    );
+  }
+
+  Widget _buildHighlights(bool isMobile) {
+    final highlights = [
+      {'icon': Icons.phone_android, 'text': 'Mobile Apps'},
+      {'icon': Icons.web, 'text': 'Web Apps'},
+      {'icon': Icons.design_services, 'text': 'UI/UX Design'},
+      {'icon': Icons.support_agent, 'text': 'Freelance Available'},
+    ];
+
+    return Wrap(
+      spacing: 16,
+      runSpacing: 16,
+      children: highlights.map((highlight) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: AppColors.cardBg,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppColors.accent.withOpacity(0.2),
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                highlight['icon'] as IconData,
+                color: AppColors.accent,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                highlight['text'] as String,
+                style: AppTextStyles.body.copyWith(fontSize: 13),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -155,51 +228,60 @@ class AboutSection extends StatelessWidget {
   }
 
   Widget _buildExpertiseCards(bool isMobile) {
+    final expertise = [
+      {
+        'icon': Icons.flutter_dash,
+        'title': 'Flutter Development',
+        'description': 'Expert in building cross-platform mobile and web applications with Flutter and Dart.',
+        'gradient': [AppColors.accent, AppColors.accentPurple],
+      },
+      {
+        'icon': Icons.code,
+        'title': 'Java Development',
+        'description': 'Proficient in Java programming with experience in full-stack development and backend systems.',
+        'gradient': [AppColors.accentPurple, AppColors.accentPink],
+      },
+      {
+        'icon': Icons.storage,
+        'title': 'Database Management',
+        'description': 'Skilled in MySQL database design, optimization, and management for scalable applications.',
+        'gradient': [AppColors.accentPink, AppColors.accent],
+      },
+      {
+        'icon': Icons.web,
+        'title': 'Web Technologies',
+        'description': 'Experienced in HTML, CSS, JavaScript, Vue.js, and React for modern web development.',
+        'gradient': [AppColors.accent, AppColors.accentPurple],
+      },
+      {
+        'icon': Icons.cloud_sync,
+        'title': 'Real-time Systems',
+        'description': 'Expertise in WebSocket implementation for real-time data communication and live features.',
+        'gradient': [AppColors.accentPurple, AppColors.accentPink],
+      },
+      {
+        'icon': Icons.settings,
+        'title': 'State Management',
+        'description': 'Proficient in Provider, Riverpod, and other state management solutions for Flutter apps.',
+        'gradient': [AppColors.accentPink, AppColors.accent],
+      },
+    ];
+
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: isMobile ? 1 : 2,
       mainAxisSpacing: 20,
       crossAxisSpacing: 20,
-      childAspectRatio: isMobile ? 1.3 : 1.7,
-      children: [
-        _buildExpertiseCard(
-          Icons.phone_android,
-          'Mobile App Development',
-          'Creating native-quality mobile apps for iOS and Android with Flutter\'s cross-platform capabilities.',
-          [AppColors.accent, AppColors.accentPurple],
-        ),
-        _buildExpertiseCard(
-          Icons.web,
-          'Web Development',
-          'Building responsive, performant web applications using Flutter Web with modern UI/UX practices.',
-          [AppColors.accentPurple, AppColors.accentPink],
-        ),
-        _buildExpertiseCard(
-          Icons.architecture,
-          'Clean Architecture',
-          'Implementing scalable architecture patterns with proper state management and dependency injection.',
-          [AppColors.accentPink, AppColors.accent],
-        ),
-        _buildExpertiseCard(
-          Icons.speed,
-          'Performance Optimization',
-          'Optimizing app performance with efficient rendering, caching, and lazy loading techniques.',
-          [AppColors.accent, AppColors.accentPurple],
-        ),
-        _buildExpertiseCard(
-          Icons.integration_instructions,
-          'API Integration',
-          'Seamless integration with REST APIs, GraphQL, Firebase, and various third-party services.',
-          [AppColors.accentPurple, AppColors.accentPink],
-        ),
-        _buildExpertiseCard(
-          Icons.brush,
-          'UI/UX Implementation',
-          'Bringing designs to life with pixel-perfect implementations and smooth animations.',
-          [AppColors.accentPink, AppColors.accent],
-        ),
-      ],
+      childAspectRatio: isMobile ? 1.2 : 1.6,
+      children: expertise.map((item) {
+        return _buildExpertiseCard(
+          item['icon'] as IconData,
+          item['title'] as String,
+          item['description'] as String,
+          item['gradient'] as List<Color>,
+        );
+      }).toList(),
     );
   }
 
@@ -213,18 +295,19 @@ class AboutSection extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: AnimatedContainer(
         duration: AppDurations.medium,
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: AppColors.accent.withOpacity(0.1),
+            color: gradientColors[0].withOpacity(0.2),
+            width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: gradientColors[0].withOpacity(0.1),
-              blurRadius: 15,
-              spreadRadius: 1,
+              color: gradientColors[0].withOpacity(0.15),
+              blurRadius: 20,
+              spreadRadius: 2,
             ),
           ],
         ),
@@ -232,30 +315,45 @@ class AboutSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 50,
-              height: 50,
+              width: 56,
+              height: 56,
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: gradientColors),
-                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  colors: gradientColors,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                    color: gradientColors[0].withOpacity(0.4),
+                    blurRadius: 12,
+                    spreadRadius: 1,
+                  ),
+                ],
               ),
-              child: Icon(icon, color: Colors.white, size: 26),
+              child: Icon(icon, color: Colors.white, size: 28),
             ),
             
-            const SizedBox(height: 14),
+            const SizedBox(height: 16),
             
             Text(
               title,
-              style: AppTextStyles.subHeader.copyWith(fontSize: 17),
+              style: AppTextStyles.subHeader.copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             
             Expanded(
               child: Text(
                 description,
-                style: AppTextStyles.body.copyWith(fontSize: 13),
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.body.copyWith(
+                  fontSize: 14,
+                  height: 1.6,
+                ),
               ),
             ),
           ],
