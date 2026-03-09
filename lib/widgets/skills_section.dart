@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_portfolio/constants.dart';
 
 class SkillsSection extends StatefulWidget {
@@ -9,32 +10,25 @@ class SkillsSection extends StatefulWidget {
 }
 
 class _SkillsSectionState extends State<SkillsSection> {
-  String selectedCategory = 'All';
-  
-  final categories = ['All', 'Mobile', 'Web', 'Backend', 'Tools'];
-  
-  final skills = [
-    // Mobile Development
-    {'name': 'Flutter', 'category': 'Mobile', 'level': 0.90, 'icon': Icons.flutter_dash},
-    {'name': 'Dart', 'category': 'Mobile', 'level': 0.88, 'icon': Icons.code},
-    {'name': 'Provider', 'category': 'Mobile', 'level': 0.85, 'icon': Icons.settings},
-    {'name': 'Riverpod', 'category': 'Mobile', 'level': 0.80, 'icon': Icons.settings_applications},
-    
-    // Backend & Database
-    {'name': 'Java', 'category': 'Backend', 'level': 0.85, 'icon': Icons.code},
-    {'name': 'MySQL', 'category': 'Backend', 'level': 0.82, 'icon': Icons.storage},
-    {'name': 'REST APIs', 'category': 'Backend', 'level': 0.88, 'icon': Icons.api},
-    {'name': 'Web Socket', 'category': 'Backend', 'level': 0.80, 'icon': Icons.cloud_sync},
-    
-    // Web Development
-    {'name': 'HTML', 'category': 'Web', 'level': 0.90, 'icon': Icons.code},
-    {'name': 'CSS', 'category': 'Web', 'level': 0.88, 'icon': Icons.palette},
-    {'name': 'Vue.js', 'category': 'Web', 'level': 0.75, 'icon': Icons.web},
-    {'name': 'React', 'category': 'Web', 'level': 0.70, 'icon': Icons.web_asset},
-    
-    // Tools
-    {'name': 'Git', 'category': 'Tools', 'level': 0.85, 'icon': Icons.source},
-    {'name': 'Firebase', 'category': 'Tools', 'level': 0.80, 'icon': Icons.cloud},
+  String _selected = 'All';
+
+  static const _categories = ['All', 'Mobile', 'Web', 'Backend', 'Tools'];
+
+  static const _skills = [
+    _Skill('Flutter',   'Mobile',  0xFF00D9FF), // cyan
+    _Skill('Dart',      'Mobile',  0xFF00D9FF),
+    _Skill('HTML',      'Web',     0xFFFF9500), // orange
+    _Skill('CSS',       'Web',     0xFFFF9500),
+    _Skill('Vue.js',    'Web',     0xFFFF9500),
+    _Skill('React',     'Web',     0xFFFF9500),
+    _Skill('Java',      'Backend', 0xFF7B61FF), // purple
+    _Skill('MySQL',     'Backend', 0xFF7B61FF),
+    _Skill('REST APIs', 'Backend', 0xFF7B61FF),
+    _Skill('WebSocket', 'Backend', 0xFF7B61FF),
+    _Skill('Git',       'Tools',   0xFF00FF88), // bright green
+    _Skill('Firebase',  'Tools',   0xFF00FF88),
+    _Skill('Provider',  'Tools',   0xFF00FF88),
+    _Skill('Riverpod',  'Tools',   0xFF00FF88),
   ];
 
   @override
@@ -42,91 +36,60 @@ class _SkillsSectionState extends State<SkillsSection> {
     final size = MediaQuery.of(context).size;
     final isMobile = size.width < 768;
 
-    final filteredSkills = selectedCategory == 'All'
-        ? skills
-        : skills.where((s) => s['category'] == selectedCategory).toList();
+    final filtered = _selected == 'All'
+        ? _skills
+        : _skills.where((s) => s.category == _selected).toList();
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 20 : 80,
-        vertical: isMobile ? 60 : 70,
+        horizontal: isMobile ? 24 : 80,
+        vertical: isMobile ? 60 : 80,
       ),
+      color: AppColors.surface,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section header
-          Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'Technologies I Master',
-                    style: AppTextStyles.sectionTitle.copyWith(
-                      fontSize: isMobile ? 32 : 40,
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Container(
-                      height: 2,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.accent,
-                            AppColors.accent.withOpacity(0),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 12),
-              
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'A comprehensive toolkit of modern technologies and frameworks I work with',
-                  style: AppTextStyles.body.copyWith(
-                    fontSize: isMobile ? 14 : 16,
-                  ),
-                ),
-              ),
-              
-              const SizedBox(height: 35),
-              
-              // Category filter
-              _buildCategoryFilter(isMobile),
-            ],
+          _buildSectionHeader(isMobile),
+          const SizedBox(height: 36),
+          _buildCategoryFilter(isMobile),
+          const SizedBox(height: 28),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: filtered.map((s) => _buildSkillTag(s)).toList(),
           ),
-          
           const SizedBox(height: 40),
-          
-          // Skills grid
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isMobile ? 2 : 4,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              childAspectRatio: isMobile ? 0.9 : 1.6,
-            ),
-            itemCount: filteredSkills.length,
-            itemBuilder: (context, index) {
-              final skill = filteredSkills[index];
-              return _buildSkillCard(
-                skill['name'] as String,
-                skill['level'] as double,
-                skill['icon'] as IconData,
-                isPlaceholder: false,
-              );
-            },
-          ),
-          
-          const SizedBox(height: 40),
+          _buildNote(),
         ],
       ),
+    );
+  }
+
+  Widget _buildSectionHeader(bool isMobile) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '// 03',
+          style: AppTextStyles.accent.copyWith(
+            color: AppColors.textMuted,
+            fontSize: 12,
+            letterSpacing: 1,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Skills',
+          style: AppTextStyles.sectionTitle.copyWith(
+            fontSize: isMobile ? 24 : 28,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Technologies I work with daily',
+          style: AppTextStyles.body.copyWith(fontSize: 15),
+        ),
+      ],
     );
   }
 
@@ -134,45 +97,36 @@ class _SkillsSectionState extends State<SkillsSection> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: categories.map((category) {
-          final isSelected = selectedCategory == category;
+        children: _categories.map((cat) {
+          final isSelected = _selected == cat;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.only(right: 8),
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedCategory = category;
-                  });
-                },
+                onTap: () => setState(() => _selected = cat),
                 child: AnimatedContainer(
-                  duration: AppDurations.medium,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
+                  duration: AppDurations.fast,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
                   decoration: BoxDecoration(
-                    gradient: isSelected
-                        ? LinearGradient(
-                            colors: [AppColors.accent, AppColors.accentPurple],
-                          )
-                        : null,
-                    color: isSelected ? null : AppColors.cardBg,
-                    borderRadius: BorderRadius.circular(25),
+                    color: isSelected
+                        ? AppColors.accent.withValues(alpha: 0.15)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(6),
                     border: Border.all(
                       color: isSelected
-                          ? Colors.transparent
-                          : AppColors.accent.withOpacity(0.3),
+                          ? AppColors.accent.withValues(alpha: 0.5)
+                          : AppColors.border,
                     ),
                   ),
                   child: Text(
-                    category,
-                    style: AppTextStyles.button.copyWith(
-                      fontSize: 14,
+                    cat,
+                    style: AppTextStyles.body.copyWith(
+                      fontSize: 13,
+                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                       color: isSelected
-                          ? Colors.white
+                          ? AppColors.accent
                           : AppColors.textSecondary,
                     ),
                   ),
@@ -185,125 +139,58 @@ class _SkillsSectionState extends State<SkillsSection> {
     );
   }
 
-  Widget _buildSkillCard(String name, double level, IconData icon,
-      {bool isPlaceholder = false}) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: AnimatedContainer(
-        duration: AppDurations.medium,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isPlaceholder
-                ? AppColors.accentPurple.withOpacity(0.3)
-                : AppColors.accent.withOpacity(0.2),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.accent.withOpacity(0.05),
-              blurRadius: 15,
-              spreadRadius: 1,
-            ),
-          ],
+  Widget _buildSkillTag(_Skill skill) {
+    final color = Color(skill.colorValue);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: color.withValues(alpha: 0.25),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Icon
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: isPlaceholder
-                      ? [AppColors.accentPurple, AppColors.accentPink]
-                      : [AppColors.accent, AppColors.accentPurple],
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: Colors.white, size: 24),
-            ),
-            
-            const SizedBox(height: 12),
-            
-            // Skill name
-            Text(
-              name,
-              style: AppTextStyles.subHeader.copyWith(fontSize: 15),
-              textAlign: TextAlign.center,
-            ),
-            
-            const SizedBox(height: 10),
-            
-            // Progress bar
-            TweenAnimationBuilder<double>(
-              duration: const Duration(milliseconds: 1500),
-              tween: Tween(begin: 0.0, end: level),
-              builder: (context, value, child) {
-                return Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: AppColors.secondary,
-                            borderRadius: BorderRadius.circular(3),
-                          ),
-                        ),
-                        FractionallySizedBox(
-                          widthFactor: value,
-                          child: Container(
-                            height: 6,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppColors.accent,
-                                  AppColors.accentPurple,
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(3),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      '${(value * 100).toInt()}%',
-                      style: AppTextStyles.accent.copyWith(fontSize: 12),
-                    ),
-                  ],
-                );
-              },
-            ),
-            
-            if (isPlaceholder) ...[
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.accentPurple.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  'Learning',
-                  style: AppTextStyles.accent.copyWith(
-                    fontSize: 10,
-                    color: AppColors.accentPurple,
-                  ),
-                ),
-              ),
-            ],
-          ],
+      ),
+      child: Text(
+        skill.name,
+        style: GoogleFonts.jetBrainsMono(
+          fontSize: 13,
+          color: color,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
+
+  Widget _buildNote() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.info_outline,
+              size: 16, color: AppColors.textSecondary),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              'Primary focus is Flutter & Dart. Java, web frameworks, and tools used in production at current and previous roles.',
+              style: AppTextStyles.body.copyWith(fontSize: 13),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Skill {
+  final String name;
+  final String category;
+  final int colorValue;
+
+  const _Skill(this.name, this.category, this.colorValue);
 }

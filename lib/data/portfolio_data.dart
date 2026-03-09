@@ -1,19 +1,20 @@
 /// Portfolio data models and constants
 /// Update this file to customize your portfolio content
+library;
 
 class PortfolioData {
   // Personal Information
   static const String name = 'JANAKIRAMAN VELAYUTHAM';
-  static const String title = 'Freelance Flutter Developer';
-  static const String tagline = 'Available for Mobile & Web Projects';
+  static const String title = 'Flutter Developer';
+  static const String tagline = 'Freelance · Open to Full-time Roles';
   static const String fullAddress = 'No.14/9, Mangalapuram 1st Street, West Tambaram, Chennai, India';
   static const String description =
-      'I\'m a passionate Flutter developer specializing in creating beautiful, high-performance cross-platform applications. '
-      'With expertise in mobile and web development, I help businesses transform their ideas into stunning digital experiences. '
-      'I focus on clean code, modern UI/UX design, and delivering solutions that exceed expectations.';
+      'Senior Flutter developer building production-grade cross-platform apps for mobile and web. '
+      'Currently at Zebu, leading development of MYNT — a real-time stock trading platform '
+      'deployed on iOS, Android, and Web. Available for freelance projects and full-time roles.';
   
   static const String location = 'Chennai, India';
-  static const String availability = 'Available for Freelance Projects';
+  static const String availability = 'Open to new opportunities';
   
   // Contact Information
   static const String email = 'vjanakiraman03@gmail.com';
@@ -26,17 +27,24 @@ class PortfolioData {
   static const String resumeUrl = 'https://drive.google.com/file/d/1mmDdBvVHjD62fZEM_xfYCkWxILNzrxpm/view?usp=sharing';
   
   // Stats
-  static const String yearsExperience = '1+';
+  static const String yearsExperience = '2+';
   static const String projectsCompleted = '5+';
-  static const String clientSatisfaction = '100%';
+  static const String appsPlatforms = '3';
   
   // About Me
-  static const String aboutTitle = 'Freelance Flutter Developer';
+  static const String aboutTitle = 'Senior Flutter Developer';
   static const String aboutDescription1 =
-      'I transform your ideas into stunning, high-performance mobile and web applications. As a freelance Flutter developer, I specialize in creating cross-platform solutions that work seamlessly on iOS, Android, and Web.';
-  
+      'I build production-grade cross-platform apps with Flutter and Dart — '
+      'from architecture decisions to App Store deployment. '
+      'At Zebu I own the full development cycle of MYNT, a real-time trading platform '
+      'handling live market data, portfolio management, and multi-stock tracking across '
+      'iOS, Android, and Web.';
+
   static const String aboutDescription2 =
-      'My approach combines modern UI/UX design principles with clean, maintainable code. I work closely with clients to understand their vision and deliver solutions that not only meet but exceed expectations. Whether you need a complete app from scratch or enhancements to existing projects, I\'m here to help.';
+      'I care about clean architecture, readable code, and UI that actually makes '
+      'sense to users. I\'ve shipped features end-to-end using REST APIs, WebSockets, '
+      'Provider, and Riverpod — comfortable working independently or leading a small team. '
+      'Available for freelance contracts and open to senior/lead Flutter roles.';
   
   // Skills
   static const List<String> skills = [
@@ -102,13 +110,6 @@ class PortfolioData {
       "score": "73.5%"
     },
     {
-      "degree": "HSC",
-      "school": "KUMARAJAH MUTHIAH HR SEC SCHOOL",
-      "period": "2017 – 2018",
-      "location": "Chennai",
-      "score": "51.5%"
-    },
-    {
       "degree": "SSLC",
       "school": "SUBHAM VIDHYALAYA CBSE SCHOOL",
       "period": "2015 – 2016",
@@ -130,17 +131,17 @@ class PortfolioData {
   // Projects
   static const List<Map<String, String>> projects = [
     {
-      "title": "MYNT Trading Platform",
-      "description": "Redesigned and developed a comprehensive trading platform mobile app using Flutter. Features include real-time portfolio management, multi-stock tracking, and seamless web integration.",
+      "title": "MYNT — Trading Platform",
+      "description": "Led UI redesign and feature development for MYNT, a real-time stock trading app at Zebu. Built the Pay-off graph, Portfolio tracker, and converted the mobile app to web — enabling the same codebase to run on iOS, Android, and browsers.",
       "link": "",
-      "tech": "Flutter, Dart, REST APIs, Provider, Riverpod",
-      "type": "Mobile App"
+      "tech": "Flutter, Dart, REST APIs, WebSocket, Provider, Riverpod",
+      "type": "Mobile + Web"
     },
     {
       "title": "Portfolio Website",
-      "description": "A modern, responsive portfolio website built with Flutter Web, showcasing professional work and services with smooth animations and modern UI.",
+      "description": "This portfolio — a Flutter Web app deployed on Firebase Hosting. Responsive across mobile and desktop, with scroll-triggered animations and a contact form backed by Formspree.",
       "link": "https://janakiraman-portfolio.web.app/",
-      "tech": "Flutter Web, Firebase Hosting",
+      "tech": "Flutter Web, Firebase Hosting, Formspree",
       "type": "Web App"
     },
   ];
@@ -154,7 +155,7 @@ class PortfolioData {
   };
   
   // Footer
-  static const String footerTagline = 'Ready to bring your ideas to life?\nLet\'s create something amazing together!';
+  static const String footerTagline = 'Ready to ship something great?\nLet\'s work together.';
   
   // Services for Freelancing
   static const List<Map<String, dynamic>> services = [

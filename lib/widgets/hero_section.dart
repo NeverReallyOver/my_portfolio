@@ -1,59 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_portfolio/constants.dart';
-import 'dart:math' as math;
-
 import 'package:my_portfolio/data/portfolio_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HeroSection extends StatefulWidget {
+class HeroSection extends StatelessWidget {
   final Function(GlobalKey) onNavigate;
   final Map<String, GlobalKey> sectionKeys;
-  
+
   const HeroSection({
     super.key,
     required this.onNavigate,
     required this.sectionKeys,
   });
-
-  @override
-  State<HeroSection> createState() => _HeroSectionState();
-}
-
-class _HeroSectionState extends State<HeroSection>
-    with TickerProviderStateMixin {
-  late AnimationController _floatingController;
-  late AnimationController _particleController;
-  late Animation<double> _floatingAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    
-    _floatingController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _particleController = AnimationController(
-      duration: const Duration(seconds: 20),
-      vsync: this,
-    )..repeat();
-
-    _floatingAnimation = Tween<double>(
-      begin: -10,
-      end: 10,
-    ).animate(CurvedAnimation(
-      parent: _floatingController,
-      curve: Curves.easeInOut,
-    ));
-  }
-
-  @override
-  void dispose() {
-    _floatingController.dispose();
-    _particleController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,61 +21,94 @@ class _HeroSectionState extends State<HeroSection>
 
     return Container(
       height: size.height,
-      width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary,
-            AppColors.secondary,
-            AppColors.primary,
+            Color(0xFF0A0E27),
+            Color(0xFF0E1340),
+            Color(0xFF0A0E27),
           ],
+          stops: [0.0, 0.5, 1.0],
         ),
       ),
       child: Stack(
         children: [
-          // Animated background particles
-          _buildAnimatedParticles(),
-          
-          // Content
-          SafeArea(
+          // Dot-grid texture
+          Positioned.fill(
+            child: CustomPaint(painter: _DotGridPainter()),
+          ),
+
+          // Cyan radial glow — top right
+          Positioned(
+            top: -180,
+            right: -180,
+            child: Container(
+              width: 600,
+              height: 600,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.accent.withValues(alpha: 0.12),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Purple radial glow — bottom left
+          Positioned(
+            bottom: -120,
+            left: -120,
+            child: Container(
+              width: 480,
+              height: 480,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.accentPurple.withValues(alpha: 0.08),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Gradient fade at bottom for smooth section transition
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 120,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.bg.withValues(alpha: 0),
+                    AppColors.bg,
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Content — offset by fixed navbar height
+          Positioned.fill(
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isMobile ? 20 : 60,
-                vertical: 20,
+              padding: EdgeInsets.only(
+                top: kNavBarHeight,
+                left: isMobile ? 24 : 80,
+                right: isMobile ? 24 : 80,
               ),
-              child: Column(
-                children: [
-                  // Top navigation bar
-                  _buildNavBar(isMobile),
-                  
-                  Expanded(
-                    child: isMobile
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildTextContent(isMobile),
-                              const SizedBox(height: 40),
-                              _buildProfileImage(),
-                            ],
-                          )
-                        : Row(
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: _buildTextContent(isMobile),
-                              ),
-                              const SizedBox(width: 60),
-                              Expanded(
-                                flex: 2,
-                                child: _buildProfileImage(),
-                              ),
-                            ],
-                          ),
-                  ),
-                ],
-              ),
+              child: isMobile
+                  ? _buildMobileContent(context)
+                  : _buildDesktopContent(),
             ),
           ),
         ],
@@ -124,644 +116,448 @@ class _HeroSectionState extends State<HeroSection>
     );
   }
 
-  Widget _buildAnimatedParticles() {
-    return AnimatedBuilder(
-      animation: _particleController,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: ParticlesPainter(_particleController.value),
-          size: Size.infinite,
-        );
-      },
-    );
-  }
-
-  Widget _buildNavBar(bool isMobile) {
+  Widget _buildDesktopContent() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Logo/Name
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColors.accent, AppColors.accentPurple],
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.code,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-            if (!isMobile) ...[
-              const SizedBox(width: 12),
-              Text(
-                'Flutter Dev',
-                style: AppTextStyles.button.copyWith(fontSize: 18),
-              ),
-            ],
-          ],
-        ),
-        
-        // Nav items
-        if (!isMobile)
-          Row(
-            children: [
-              _buildNavItem('About'),
-              _buildNavItem('Services'),
-              _buildNavItem('Skills'),
-              _buildNavItem('Projects'),
-              _buildNavItem('Experience'),
-              _buildNavItem('Contact'),
-            ],
-          )
-        else
-          IconButton(
-            icon: const Icon(Icons.menu, color: Colors.white),
-            onPressed: () {
-              _showMobileMenu(context);
-            },
-          ),
+        Expanded(flex: 5, child: _buildHeroText(false)),
+        const SizedBox(width: 80),
+        Expanded(flex: 4, child: _buildCodeCard()),
       ],
     );
   }
 
-  Widget _buildNavItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: InkWell(
-          onTap: () {
-            final key = widget.sectionKeys[text];
-            if (key != null) {
-              widget.onNavigate(key);
-            }
-          },
-          child: Text(
-            text,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.textPrimary,
-              fontSize: 16,
-            ),
-          ),
+  Widget _buildMobileContent(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 48),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeroText(true),
+            const SizedBox(height: 48),
+            _buildCodeCard(),
+            const SizedBox(height: 32),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildTextContent(bool isMobile) {
+  Widget _buildHeroText(bool isMobile) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Badge
+        // Available badge
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: AppColors.accent.withOpacity(0.1),
+            color: AppColors.accentGreen.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.accent.withOpacity(0.3)),
+            border: Border.all(
+              color: AppColors.accentGreen.withValues(alpha: 0.35),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.accentGreen.withValues(alpha: 0.12),
+                blurRadius: 12,
+              ),
+            ],
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 8,
-                height: 8,
+                width: 7,
+                height: 7,
                 decoration: BoxDecoration(
-                  color: AppColors.accent,
+                  color: AppColors.accentGreen,
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accentGreen.withValues(alpha: 0.6),
+                      blurRadius: 6,
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(width: 8),
               Text(
-                'Freelance Flutter Developer • Available Now',
-                style: AppTextStyles.accent.copyWith(
-                  color: AppColors.accent,
-                  fontSize: 13,
+                'Open to new opportunities',
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  color: AppColors.accentGreen,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
         ),
-        
-        const SizedBox(height: 24),
-        
-        // Name with animation
-        Text(
-          PortfolioData.name,
-          style: AppTextStyles.heroTitle.copyWith(
-            fontSize: isMobile ? 36 : 64,
+
+        const SizedBox(height: 28),
+
+        // Name — diagonal gradient white → cyan
+        ShaderMask(
+          shaderCallback: (Rect bounds) => const LinearGradient(
+            colors: [Color(0xFFE6F0FF), Color(0xFF00D9FF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ).createShader(bounds),
+          blendMode: BlendMode.srcIn,
+          child: Text(
+            'Janakiraman\nVelayutham',
+            style: AppTextStyles.heroTitle.copyWith(
+              fontSize: isMobile ? 40 : 58,
+              color: Colors.white,
+            ),
           ),
         ),
-        
+
         const SizedBox(height: 12),
-        
-        // Animated job title
-        Row(
-          children: [
-            Text(
-              'Freelance Flutter Developer',
-              style: AppTextStyles.subHeader.copyWith(
-                fontSize: isMobile ? 24 : 32,
-                foreground: Paint()
-                  ..shader = LinearGradient(
-                    colors: [AppColors.accent, AppColors.accentPurple],
-                  ).createShader(const Rect.fromLTWH(0, 0, 400, 50)),
-              ),
-            ),
-          ],
+
+        // Title
+        Text(
+          'Flutter Developer',
+          style: GoogleFonts.inter(
+            fontSize: isMobile ? 18 : 22,
+            fontWeight: FontWeight.w500,
+            color: AppColors.accent,
+            letterSpacing: -0.3,
+          ),
         ),
-        
+
+        const SizedBox(height: 6),
+
+        // Dual positioning
+        Text(
+          'Freelance · Open to Full-time Roles',
+          style: GoogleFonts.jetBrainsMono(
+            fontSize: isMobile ? 12 : 13,
+            color: AppColors.textSecondary,
+          ),
+        ),
+
         const SizedBox(height: 24),
-        
+
         // Description
         SizedBox(
-          width: isMobile ? double.infinity : 500,
+          width: isMobile ? double.infinity : 430,
           child: Text(
-            'I transform your ideas into stunning, high-performance mobile and web applications. Specializing in Flutter development, I deliver cross-platform solutions that work seamlessly on iOS, Android, and Web.',
-            style: AppTextStyles.body.copyWith(fontSize: isMobile ? 16 : 18),
+            'Building production-grade cross-platform apps with Flutter and Dart. '
+            'Currently at Zebu leading MYNT — a real-time trading platform '
+            'live on iOS, Android, and Web.',
+            style: AppTextStyles.body.copyWith(
+              fontSize: 15,
+              height: 1.8,
+            ),
           ),
         ),
-        
+
+        const SizedBox(height: 24),
+
+        // Stat row
+        _buildStatRow(),
         const SizedBox(height: 32),
-        
-        // Location and experience
-        Row(
-          children: [
-            Icon(Icons.location_on, color: AppColors.accent, size: 20),
-            const SizedBox(width: 8),
-            Text(
-              'Chennai, India',
-              style: AppTextStyles.body.copyWith(fontSize: 14),
-            ),
-            const SizedBox(width: 24),
-            Icon(Icons.work, color: AppColors.accent, size: 20),
-            const SizedBox(width: 8),
-            Text(
-              'Freelance Available',
-              style: AppTextStyles.body.copyWith(fontSize: 14),
-            ),
-          ],
-        ),
-        
-        const SizedBox(height: 40),
-        
-        // CTA Buttons
+
+        // CTAs
         Wrap(
-          spacing: 16,
-          runSpacing: 16,
+          spacing: 12,
+          runSpacing: 12,
           children: [
-            _buildGradientButton(
-              'Start Your Project',
-              () {
-                final contactKey = widget.sectionKeys['Contact'];
-                if (contactKey != null) {
-                  widget.onNavigate(contactKey);
-                }
-              },
-              icon: Icons.arrow_forward,
-            ),
-            _buildOutlineButton(
-              'View Resume',
-              () async {
-                // Open portfolio website
-                final Uri portfolioUri = Uri.parse(PortfolioData.resumeUrl);
-                if (await canLaunchUrl(portfolioUri)) {
-                  await launchUrl(portfolioUri, mode: LaunchMode.externalApplication);
-                }
-              },
-              icon: Icons.description,
-            ),
+            _buildPrimaryButton('View My Work', () {
+              final key = sectionKeys['Projects'];
+              if (key != null) onNavigate(key);
+            }),
+            _buildSecondaryButton('Resume ↗', () async {
+              final Uri uri = Uri.parse(PortfolioData.resumeUrl);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            }),
           ],
         ),
-        
-        const SizedBox(height: 32),
-        
+
+        const SizedBox(height: 36),
+
         // Social links
         Row(
           children: [
-            _buildSocialIcon(Icons.code, () async {
-              final Uri uri = Uri.parse(PortfolioData.githubUrl);
-              if (await canLaunchUrl(uri)) {
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
-              }
-            }),
-            _buildSocialIcon(Icons.link, () async {
-              final Uri uri = Uri.parse(PortfolioData.linkedinUrl);
-              if (await canLaunchUrl(uri)) {
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
-              }
-            }),
-            _buildSocialIcon(Icons.email, () async {
-              final Uri emailUri = Uri(
-                scheme: 'mailto',
-                path: PortfolioData.email,
-              );
-              if (await canLaunchUrl(emailUri)) {
-                await launchUrl(emailUri);
-              }
-            }),
+            _buildSocialLink('GitHub', PortfolioData.githubUrl),
+            _buildTextDivider(),
+            _buildSocialLink('LinkedIn', PortfolioData.linkedinUrl),
+            _buildTextDivider(),
+            _buildSocialLink('Email', 'mailto:${PortfolioData.email}'),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildProfileImage() {
-    return AnimatedBuilder(
-      animation: _floatingAnimation,
-      builder: (context, child) {
-        return Transform.translate(
-          offset: Offset(0, _floatingAnimation.value),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Glowing rings
-              ...List.generate(3, (index) {
-                return AnimatedBuilder(
-                  animation: _particleController,
-                  builder: (context, child) {
-                    return Transform.scale(
-                      scale: 1.0 + (index * 0.15) + (_particleController.value * 0.1),
-                      child: Container(
-                        width: 300 + (index * 40),
-                        height: 300 + (index * 40),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.accent.withOpacity(0.1 - (index * 0.03)),
-                            width: 2,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }),
-              
-              // Profile circle with gradient border
-              Container(
-                width: 320,
-                height: 320,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.accent,
-                      AppColors.accentPurple,
-                      AppColors.accentPink,
-                    ],
-                    stops: const [0.0, 0.5, 1.0],
-                    transform: GradientRotation(_particleController.value * 2 * math.pi),
-                  ),
-                ),
-                padding: const EdgeInsets.all(4),
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.secondary,
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/images/flutter_expertises.png',
-                      width: 200,
-                      height: 200,
-                      
-                      errorBuilder: (context, error, stackTrace) {
-                        return ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: [AppColors.accent, AppColors.accentPurple],
-                          ).createShader(bounds),
-                          child: Icon(
-                            Icons.flutter_dash,
-                            size: 150,
-                            color: Colors.white,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              
-              // Floating tech icons
-              ...List.generate(4, (index) {
-                return AnimatedBuilder(
-                  animation: _particleController,
-                  builder: (context, child) {
-                    final angle = (index * math.pi / 2) + (_particleController.value * 2 * math.pi);
-                    final radius = 180.0;
-                    return Transform.translate(
-                      offset: Offset(
-                        math.cos(angle) * radius,
-                        math.sin(angle) * radius,
-                      ),
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: AppColors.cardBg,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.accent.withOpacity(0.3),
-                              blurRadius: 15,
-                              spreadRadius: 2,
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          _getTechIcon(index),
-                          color: AppColors.accent,
-                          size: 24,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  IconData _getTechIcon(int index) {
-    switch (index) {
-      case 0:
-        return Icons.phone_android; // Mobile
-      case 1:
-        return Icons.web; // Web
-      case 2:
-        return Icons.tablet; // Tablet
-      case 3:
-        return Icons.flutter_dash; // Flutter
-      default:
-        return Icons.code;
-    }
-  }
-
-  Widget _buildGradientButton(String text, VoidCallback onPressed, {IconData? icon}) {
+  Widget _buildPrimaryButton(String label, VoidCallback onTap) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: onPressed,
+        onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [AppColors.accent, AppColors.accentPurple],
-            ),
-            borderRadius: BorderRadius.circular(30),
+            color: AppColors.accent,
+            borderRadius: BorderRadius.circular(6),
             boxShadow: [
               BoxShadow(
-                color: AppColors.accent.withOpacity(0.4),
-                blurRadius: 20,
-                spreadRadius: 2,
+                color: AppColors.accent.withValues(alpha: 0.35),
+                blurRadius: 18,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(text, style: AppTextStyles.button),
-              if (icon != null) ...[
-                const SizedBox(width: 8),
-                Icon(icon, size: 20, color: Colors.white),
-              ],
-            ],
+          child: Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColors.bg,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildOutlineButton(String text, VoidCallback onPressed, {IconData? icon}) {
+  Widget _buildSecondaryButton(String label, VoidCallback onTap) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: onPressed,
+        onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.accent, width: 2),
-            borderRadius: BorderRadius.circular(30),
+            border: Border.all(color: AppColors.border),
+            borderRadius: BorderRadius.circular(6),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                text,
-                style: AppTextStyles.button.copyWith(color: AppColors.accent),
-              ),
-              if (icon != null) ...[
-                const SizedBox(width: 8),
-                Icon(icon, size: 20, color: AppColors.accent),
-              ],
-            ],
+          child: Text(
+            label,
+            style: AppTextStyles.button.copyWith(color: AppColors.textSecondary),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildSocialIcon(IconData icon, VoidCallback onTap) {
+  Widget _buildSocialLink(String label, String url) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () async {
+          final uri = Uri.parse(url);
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri, mode: LaunchMode.externalApplication);
+          }
+        },
+        child: Text(
+          label,
+          style: AppTextStyles.body.copyWith(
+            fontSize: 14,
+            color: AppColors.textSecondary,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextDivider() {
     return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: GestureDetector(
-          onTap: onTap,
-          child: Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AppColors.cardBg,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.accent.withOpacity(0.2)),
-            ),
-            child: Icon(icon, color: AppColors.accent, size: 20),
-          ),
-        ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Text(
+        '·',
+        style: AppTextStyles.body.copyWith(color: AppColors.border),
       ),
     );
   }
 
-  void _showMobileMenu(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        decoration: BoxDecoration(
-          color: AppColors.cardBg,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
+  // Code-editor card showing current work
+  Widget _buildCodeCard() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.accent.withValues(alpha: 0.08),
+            blurRadius: 30,
+            offset: const Offset(0, 8),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Handle bar
-              Container(
-                margin: const EdgeInsets.only(top: 12, bottom: 8),
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.textSecondary.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(2),
-                ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Window chrome
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: const BoxDecoration(
+              color: AppColors.surfaceElevated,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
               ),
-              
-              // Header
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.accent, AppColors.accentPurple],
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Icons.code,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Menu',
-                          style: AppTextStyles.button.copyWith(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              
-              // Navigation items
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  children: [
-                    _buildDrawerItem(context, 'About', Icons.person),
-                    _buildDrawerItem(context, 'Services', Icons.work_outline),
-                    _buildDrawerItem(context, 'Skills', Icons.code),
-                    _buildDrawerItem(context, 'Projects', Icons.folder),
-                    _buildDrawerItem(context, 'Experience', Icons.work),
-                    _buildDrawerItem(context, 'Contact', Icons.email),
-                  ],
-                ),
-              ),
-              
-              // Footer
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  '© ${DateTime.now().year} ${PortfolioData.name}',
-                  style: AppTextStyles.body.copyWith(
+              border: Border(bottom: BorderSide(color: AppColors.border)),
+            ),
+            child: Row(
+              children: [
+                _buildWindowDot(const Color(0xFFFF5F57)),
+                const SizedBox(width: 6),
+                _buildWindowDot(const Color(0xFFFFBD2E)),
+                const SizedBox(width: 6),
+                _buildWindowDot(const Color(0xFF28C840)),
+                const SizedBox(width: 14),
+                Text(
+                  'mynt_app.dart',
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: 12,
                     color: AppColors.textSecondary,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+
+          // Code
+          Padding(
+            padding: const EdgeInsets.all(22),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _codeLine('// @ Zebu Share & Wealth Managements', AppColors.textMuted),
+                const SizedBox(height: 14),
+                _codeLine('class MyntTradingApp extends StatefulWidget {', AppColors.textPrimary),
+                const SizedBox(height: 4),
+                _codeLine('  // Platforms', AppColors.textMuted),
+                _codeLine("  static const targets = ['iOS', 'Android', 'Web'];", AppColors.accentOrange),
+                const SizedBox(height: 4),
+                _codeLine('  // Key features built', AppColors.textMuted),
+                _codeLine("  final payoffGraph = RealTimeChart();", AppColors.accentGreen),
+                _codeLine("  final portfolio  = MultiStockTracker();", AppColors.accentGreen),
+                _codeLine("  final feed       = WebSocketStream();", AppColors.accentGreen),
+                const SizedBox(height: 4),
+                _codeLine('}', AppColors.textPrimary),
+                const SizedBox(height: 18),
+                Row(
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: AppColors.accentGreen,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.accentGreen.withValues(alpha: 0.5),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Status: Live in Production',
+                      style: GoogleFonts.jetBrainsMono(
+                        fontSize: 12,
+                        color: AppColors.accentGreen,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWindowDot(Color color) {
+    return Container(
+      width: 12,
+      height: 12,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+    );
+  }
+
+  Widget _codeLine(String text, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Text(
+        text,
+        style: GoogleFonts.jetBrainsMono(
+          fontSize: 13,
+          color: color,
+          height: 1.5,
         ),
       ),
     );
   }
 
-  Widget _buildDrawerItem(BuildContext context, String text, IconData icon) {
-    return ListTile(
-      leading: Icon(icon, color: AppColors.accent, size: 24),
-      title: Text(
-        text,
-        style: AppTextStyles.body.copyWith(
-          color: AppColors.textPrimary,
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
+  Widget _buildStatRow() {
+    return Row(
+      children: [
+        _buildStat('2+', 'yrs exp'),
+        const SizedBox(width: 20),
+        Container(width: 1, height: 18, color: AppColors.border),
+        const SizedBox(width: 20),
+        _buildStat('3', 'platforms'),
+        const SizedBox(width: 20),
+        Container(width: 1, height: 18, color: AppColors.border),
+        const SizedBox(width: 20),
+        _buildStat('Live', 'in production'),
+      ],
+    );
+  }
+
+  Widget _buildStat(String value, String label) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text(
+          value,
+          style: AppTextStyles.subHeader.copyWith(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
         ),
-      ),
-      onTap: () {
-        Navigator.of(context).pop(); // Close menu
-        // Small delay to ensure menu closes before scrolling
-        Future.delayed(const Duration(milliseconds: 300), () {
-          final key = widget.sectionKeys[text];
-          if (key != null) {
-            widget.onNavigate(key);
-          }
-        });
-      },
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        const SizedBox(width: 5),
+        Text(
+          label,
+          style: AppTextStyles.body.copyWith(fontSize: 13),
+        ),
+      ],
     );
   }
 }
 
-class ParticlesPainter extends CustomPainter {
-  final double animationValue;
-  
-  ParticlesPainter(this.animationValue);
-
+class _DotGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.accent.withOpacity(0.1)
-      ..strokeWidth = 1;
+      ..color = const Color(0x1500D9FF) // cyan-tinted dots
+      ..style = PaintingStyle.fill;
 
-    // Draw particles
-    for (int i = 0; i < 50; i++) {
-      final x = (i * 100 + animationValue * 200) % size.width;
-      final y = (i * 50 + animationValue * 100) % size.height;
-      
-      canvas.drawCircle(
-        Offset(x, y),
-        2 + math.sin(animationValue * 2 * math.pi + i) * 1,
-        paint,
-      );
-    }
+    const spacing = 28.0;
+    const radius = 1.0;
 
-    // Draw connecting lines
-    paint.strokeWidth = 0.5;
-    for (int i = 0; i < 20; i++) {
-      final x1 = (i * 150 + animationValue * 100) % size.width;
-      final y1 = (i * 100) % size.height;
-      final x2 = ((i + 1) * 150 + animationValue * 150) % size.width;
-      final y2 = ((i + 1) * 100) % size.height;
-      
-      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), paint);
+    for (double x = 0; x <= size.width; x += spacing) {
+      for (double y = 0; y <= size.height; y += spacing) {
+        canvas.drawCircle(Offset(x, y), radius, paint);
+      }
     }
   }
 
   @override
-  bool shouldRepaint(ParticlesPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

@@ -18,7 +18,6 @@ class _ContactSectionState extends State<ContactSection> {
   final _emailController = TextEditingController();
   final _messageController = TextEditingController();
   
-  bool _isHoveredSubmit = false;
   bool _isLoading = false;
   
   // Formspree endpoint - Replace with your Formspree form ID
@@ -60,28 +59,29 @@ class _ContactSectionState extends State<ContactSection> {
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 20 : 80,
-        vertical: isMobile ? 60 : 100,
+        horizontal: isMobile ? 24 : 80,
+        vertical: isMobile ? 60 : 80,
       ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary,
-            AppColors.secondary,
-          ],
-        ),
-      ),
+      color: AppColors.surface,
       child: Column(
         children: [
           // Section header
           Column(
             children: [
               Text(
-                'Let\'s Build Something Amazing',
+                '// 06',
+                style: AppTextStyles.accent.copyWith(
+                  color: AppColors.textMuted,
+                  fontSize: 12,
+                  letterSpacing: 1,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Let's Work Together",
                 style: AppTextStyles.sectionTitle.copyWith(
-                  fontSize: isMobile ? 32 : 48,
+                  fontSize: isMobile ? 28 : 40,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -209,28 +209,25 @@ class _ContactSectionState extends State<ContactSection> {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.cardBg,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: AppColors.accent.withOpacity(0.2),
-            ),
+            color: AppColors.surfaceElevated,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.border),
+            boxShadow: AppShadows.card,
           ),
           child: Row(
             children: [
               Container(
-                width: 50,
-                height: 50,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.accent, AppColors.accentPurple],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.accent.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(icon, color: Colors.white, size: 24),
+                child: Icon(icon, color: AppColors.accent, size: 18),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,23 +235,27 @@ class _ContactSectionState extends State<ContactSection> {
                     Text(
                       label,
                       style: AppTextStyles.body.copyWith(
-                        fontSize: 14,
-                        color: AppColors.textSecondary,
+                        fontSize: 12,
+                        color: AppColors.textMuted,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(
                       value,
-                      style: AppTextStyles.subHeader.copyWith(fontSize: 16),
+                      style: AppTextStyles.body.copyWith(
+                        fontSize: 14,
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
               ),
               if (onTap != null)
-                Icon(
-                  Icons.arrow_forward,
-                  color: AppColors.accent,
-                  size: 20,
+                const Icon(
+                  Icons.open_in_new,
+                  color: AppColors.textMuted,
+                  size: 14,
                 ),
             ],
           ),
@@ -269,24 +270,22 @@ class _ContactSectionState extends State<ContactSection> {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: AppColors.cardBg,
-            borderRadius: BorderRadius.circular(25),
-            border: Border.all(
-              color: AppColors.accent.withOpacity(0.3),
-            ),
+            color: AppColors.surfaceElevated,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: AppColors.border),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, color: AppColors.accent, size: 20),
+              Icon(icon, color: AppColors.textSecondary, size: 16),
               const SizedBox(width: 8),
               Text(
                 label,
-                style: AppTextStyles.button.copyWith(
-                  fontSize: 14,
-                  color: AppColors.accent,
+                style: AppTextStyles.body.copyWith(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
                 ),
               ),
             ],
@@ -300,30 +299,22 @@ class _ContactSectionState extends State<ContactSection> {
     return Form(
       key: _formKey,
       child: Container(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppColors.cardBg,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: AppColors.accent.withOpacity(0.2),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.accent.withOpacity(0.1),
-              blurRadius: 30,
-              spreadRadius: 5,
-            ),
-          ],
+          color: AppColors.surfaceElevated,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColors.border),
+          boxShadow: AppShadows.featured,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Send Message',
-              style: AppTextStyles.subHeader.copyWith(fontSize: 24),
+              'Send a Message',
+              style: AppTextStyles.subHeader.copyWith(fontSize: 20),
             ),
-            
-            const SizedBox(height: 30),
+
+            const SizedBox(height: 24),
             
             // Name field
             _buildTextField(
@@ -359,8 +350,6 @@ class _ContactSectionState extends State<ContactSection> {
             
             // Submit button
             MouseRegion(
-              onEnter: (_) => setState(() => _isHoveredSubmit = true),
-              onExit: (_) => setState(() => _isHoveredSubmit = false),
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
                 onTap: _isLoading ? null : () async {
@@ -368,33 +357,24 @@ class _ContactSectionState extends State<ContactSection> {
                     await _submitForm();
                   }
                 },
-                child: AnimatedContainer(
-                  duration: AppDurations.medium,
+                child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
-                    gradient: _isLoading 
-                        ? null 
-                        : LinearGradient(
-                            colors: [AppColors.accent, AppColors.accentPurple],
-                          ),
-                    color: _isLoading ? AppColors.accent.withOpacity(0.7) : null,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.accent.withOpacity(_isHoveredSubmit ? 0.5 : 0.3),
-                        blurRadius: _isHoveredSubmit ? 25 : 20,
-                        spreadRadius: _isHoveredSubmit ? 3 : 2,
-                      ),
-                    ],
+                    color: _isLoading
+                        ? AppColors.accent.withValues(alpha: 0.6)
+                        : AppColors.accent,
+                    borderRadius: BorderRadius.circular(6),
                   ),
                   child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ? const Center(
+                          child: SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
                           ),
                         )
                       : Row(
@@ -402,10 +382,14 @@ class _ContactSectionState extends State<ContactSection> {
                           children: [
                             Text(
                               'Send Message',
-                              style: AppTextStyles.button.copyWith(fontSize: 16),
+                              style: AppTextStyles.button.copyWith(
+                                fontSize: 14,
+                                color: AppColors.bg,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             const SizedBox(width: 8),
-                            const Icon(Icons.send, size: 20, color: Colors.white),
+                            const Icon(Icons.send, size: 14, color: AppColors.bg),
                           ],
                         ),
                 ),
@@ -444,7 +428,7 @@ class _ContactSectionState extends State<ContactSection> {
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: AppTextStyles.body.copyWith(
-              color: AppColors.textSecondary.withOpacity(0.5),
+              color: AppColors.textSecondary.withValues(alpha: 0.5),
             ),
             prefixIcon: Icon(icon, color: AppColors.accent, size: 20),
             filled: true,
@@ -452,18 +436,18 @@ class _ContactSectionState extends State<ContactSection> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: AppColors.accent.withOpacity(0.3),
+                color: AppColors.accent.withValues(alpha: 0.3),
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
-                color: AppColors.accent.withOpacity(0.2),
+                color: AppColors.accent.withValues(alpha: 0.2),
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: AppColors.accent,
                 width: 2,
               ),

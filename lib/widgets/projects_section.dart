@@ -13,274 +13,210 @@ class ProjectsSection extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 20 : 80,
+        horizontal: isMobile ? 24 : 80,
         vertical: isMobile ? 60 : 80,
       ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary,
-            AppColors.secondary.withOpacity(0.5),
-          ],
-        ),
-      ),
+      color: AppColors.surface,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section header
-          Column(
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'Featured Projects',
-                    style: AppTextStyles.sectionTitle.copyWith(
-                      fontSize: isMobile ? 32 : 40,
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Container(
-                      height: 2,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.accent,
-                            AppColors.accent.withOpacity(0),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 12),
-              
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'A showcase of my recent work and projects',
-                  style: AppTextStyles.body.copyWith(
-                    fontSize: isMobile ? 14 : 16,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: 50),
-          
-          // Projects grid
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isMobile ? 1 : 2,
-              mainAxisSpacing: 30,
-              crossAxisSpacing: 30,
-              childAspectRatio: isMobile ? 1.1 : 1.3,
+          _buildHeader(isMobile),
+          const SizedBox(height: 40),
+          ...PortfolioData.projects.asMap().entries.map(
+            (e) => Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: _buildProjectCard(e.value, isMobile, featured: e.key == 0),
             ),
-            itemCount: PortfolioData.projects.length,
-            itemBuilder: (context, index) {
-              final project = PortfolioData.projects[index];
-              return _buildProjectCard(project, isMobile);
-            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildProjectCard(Map<String, String> project, bool isMobile) {
-    final hasLink = project['link'] != null && project['link']!.isNotEmpty;
-    
-    return MouseRegion(
-      cursor: hasLink ? SystemMouseCursors.click : SystemMouseCursors.basic,
-      child: GestureDetector(
-        onTap: hasLink ? () async {
-          final uri = Uri.parse(project['link']!);
-          if (await canLaunchUrl(uri)) {
-            await launchUrl(uri, mode: LaunchMode.externalApplication);
-          }
-        } : null,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.cardBg,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: AppColors.accent.withOpacity(0.2),
-              width: 1.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.accent.withOpacity(0.1),
-                blurRadius: 30,
-                spreadRadius: 2,
-              ),
-            ],
+  Widget _buildHeader(bool isMobile) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '// 04',
+          style: AppTextStyles.accent.copyWith(
+            color: AppColors.textMuted,
+            fontSize: 12,
+            letterSpacing: 1,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Work',
+          style: AppTextStyles.sectionTitle.copyWith(
+            fontSize: isMobile ? 24 : 28,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "Things I've built",
+          style: AppTextStyles.body.copyWith(fontSize: 15),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProjectCard(
+    Map<String, String> project,
+    bool isMobile, {
+    required bool featured,
+  }) {
+    final hasLink =
+        project['link'] != null && project['link']!.isNotEmpty;
+    final techTags =
+        (project['tech'] ?? '').split(', ').where((t) => t.isNotEmpty).toList();
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: featured ? AppColors.accent.withValues(alpha: 0.3) : AppColors.border,
+        ),
+        boxShadow: featured ? AppShadows.featured : AppShadows.card,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Top row: type badge + link icon
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Project image placeholder with gradient
-              Expanded(
-                flex: 3,
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.accent.withOpacity(0.2),
-                        AppColors.accentPurple.withOpacity(0.3),
-                      ],
-                    ),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Icon(
-                          project['type'] == 'Mobile App' 
-                              ? Icons.phone_android 
-                              : Icons.web,
-                          size: 80,
-                          color: AppColors.accent.withOpacity(0.5),
-                        ),
-                      ),
-                      if (hasLink)
-                        Positioned(
-                          top: 16,
-                          right: 16,
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: AppColors.accent.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(
-                              Icons.open_in_new,
-                              color: AppColors.accent,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+              Row(
+                children: [
+                  if (featured)
+                    _buildBadge('Featured', AppColors.accentOrange),
+                  if (featured) const SizedBox(width: 8),
+                  _buildBadge(project['type'] ?? 'Project', AppColors.accent),
+                ],
               ),
-              
-              // Project content
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Type badge
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              AppColors.accent.withOpacity(0.2),
-                              AppColors.accentPurple.withOpacity(0.2),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppColors.accent.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Text(
-                          project['type'] ?? 'Project',
-                          style: AppTextStyles.accent.copyWith(
-                            fontSize: 11,
+              if (hasLink)
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () async {
+                      final uri = Uri.parse(project['link']!);
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri,
+                            mode: LaunchMode.externalApplication);
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'View live',
+                          style: AppTextStyles.body.copyWith(
+                            fontSize: 13,
                             color: AppColors.accent,
                           ),
                         ),
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Title
-                      Text(
-                        project['title'] ?? '',
-                        style: AppTextStyles.subHeader.copyWith(
-                          fontSize: isMobile ? 20 : 24,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.open_in_new,
+                          size: 14,
+                          color: AppColors.accent,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      
-                      const SizedBox(height: 12),
-                      
-                      // Description
-                      Expanded(
-                        child: Text(
-                          project['description'] ?? '',
-                          style: AppTextStyles.body.copyWith(
-                            fontSize: isMobile ? 13 : 14,
-                            height: 1.6,
-                          ),
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Tech stack
-                      if (project['tech'] != null && project['tech']!.isNotEmpty)
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: project['tech']!
-                              .split(', ')
-                              .take(3)
-                              .map((tech) {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.secondary,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: AppColors.accent.withOpacity(0.2),
-                                ),
-                              ),
-                              child: Text(
-                                tech.trim(),
-                                style: AppTextStyles.body.copyWith(
-                                  fontSize: 11,
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                )
+              else
+                _buildNoteChip('Private / NDA'),
             ],
           ),
+
+          const SizedBox(height: 16),
+
+          // Title
+          Text(
+            project['title'] ?? '',
+            style: AppTextStyles.subHeader.copyWith(
+              fontSize: isMobile ? 18 : 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          // Description
+          Text(
+            project['description'] ?? '',
+            style: AppTextStyles.body.copyWith(fontSize: 15, height: 1.75),
+          ),
+
+          const SizedBox(height: 18),
+
+          // Tech stack
+          if (techTags.isNotEmpty)
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: techTags
+                  .map((tech) => Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: Text(
+                          tech.trim(),
+                          style: AppTextStyles.accent.copyWith(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ))
+                  .toList(),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBadge(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Text(
+        label,
+        style: AppTextStyles.accent.copyWith(
+          fontSize: 11,
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoteChip(String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Text(
+        label,
+        style: AppTextStyles.accent.copyWith(
+          fontSize: 11,
+          color: AppColors.textMuted,
         ),
       ),
     );
   }
 }
-
