@@ -52,7 +52,11 @@ flutter test
 
 ## Deploy
 
+Built with WebAssembly. Browsers with WasmGC (Chrome, Edge, Firefox) load the
+Wasm build; others fall back to JavaScript automatically. `firebase.json` sets
+COOP/COEP headers so the Wasm renderer can run multi-threaded.
+
 ```bash
-flutter build web --release
+flutter build web --wasm --release
 firebase deploy --only hosting
 ```

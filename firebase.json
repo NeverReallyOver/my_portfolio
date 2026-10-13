@@ -1,10 +1,25 @@
 {
   "hosting": {
-    "public": "build\\web",
+    "public": "build/web",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
+          { "key": "Cross-Origin-Embedder-Policy", "value": "credentialless" }
+        ]
+      },
+      {
+        "source": "**/*.@(wasm|mjs|js)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=3600" }
+        ]
+      }
     ]
   }
 }
