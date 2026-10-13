@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:my_portfolio/data/portfolio_data.dart';
 import 'package:my_portfolio/theme.dart';
 import 'package:my_portfolio/widgets/common.dart';
+import 'package:my_portfolio/widgets/project_form.dart';
 
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({super.key});
@@ -316,8 +317,7 @@ class FreelanceSection extends StatelessWidget {
           PrimaryButton(
             label: 'Tell me about your project',
             icon: Icons.arrow_forward,
-            onTap: () => openUrl(
-                'mailto:${Profile.email}?subject=${Uri.encodeComponent('Freelance project')}'),
+            onTap: () => showProjectForm(context),
           ),
         ],
       ),

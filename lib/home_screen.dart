@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_portfolio/widgets/hero_section.dart';
 import 'package:my_portfolio/widgets/profile_sections.dart';
+import 'package:my_portfolio/widgets/project_form.dart';
 import 'package:my_portfolio/widgets/proof_strip.dart';
 import 'package:my_portfolio/widgets/top_bar.dart';
 import 'package:my_portfolio/widgets/work_section.dart';
@@ -26,6 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // A link ending in ?project opens the project form directly, for sharing
+    // with prospective clients.
+    if (Uri.base.queryParameters.containsKey('project')) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) showProjectForm(context);
+      });
+    }
     _scroll.addListener(() {
       final scrolled = _scroll.offset > 8;
       if (scrolled != _scrolled) setState(() => _scrolled = scrolled);

@@ -30,4 +30,35 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
   }
+
+  testWidgets('project form validates before sending', (tester) async {
+    tester.view.physicalSize = const Size(1440, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(const PortfolioApp());
+    await tester.pump(const Duration(milliseconds: 400));
+
+    final button = find.text('Tell me about your project');
+    await tester.scrollUntilVisible(button, 400,
+        scrollable: find.byType(Scrollable).first);
+    await tester.tap(button);
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('What are you building?'.toUpperCase()), findsOneWidget);
+
+    await tester.tap(find.text('Send'));
+    await tester.pump();
+    expect(find.text('Please add your name'), findsOneWidget);
+    expect(find.text('Please add your email'), findsOneWidget);
+    expect(find.text('Please add a little more detail'), findsOneWidget);
+
+    await tester.enterText(find.byType(TextFormField).at(1), 'not-an-email');
+    await tester.ensureVisible(find.text('Send'));
+    await tester.pump();
+    await tester.tap(find.text('Send'));
+    await tester.pump();
+    expect(find.text("That email doesn't look right"), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
+  });
 }
