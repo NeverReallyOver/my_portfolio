@@ -1,284 +1,335 @@
-/// Portfolio data models and constants
-/// Update this file to customize your portfolio content
+/// All site copy lives here. Every figure is backed by commits, PRs or the
+/// Play Store listing; keep it that way when editing.
 library;
 
-class PortfolioData {
-  // Personal Information
-  static const String name = 'JANAKIRAMAN VELAYUTHAM';
-  static const String title = 'Flutter Developer';
-  static const String tagline = 'Freelance · Open to Full-time Roles';
-  static const String fullAddress = 'No.14/9, Mangalapuram 1st Street, West Tambaram, Chennai, India';
-  static const String description =
-      'Senior Flutter developer building production-grade cross-platform apps for mobile and web. '
-      'Currently at Zebu, leading development of MYNT — a real-time stock trading platform '
-      'deployed on iOS, Android, and Web. Available for freelance projects and full-time roles.';
-  
-  static const String location = 'Chennai, India';
-  static const String availability = 'Open to new opportunities';
-  
-  // Contact Information
-  static const String email = 'vjanakiraman03@gmail.com';
-  static const String phone = '+91 7401033915';
-  
-  // Social Links
-  static const String githubUrl = 'https://github.com/NeverReallyOver';
-  static const String linkedinUrl = 'https://www.linkedin.com/in/janakiraman-velayutham-6507bb208';
-  static const String instagramUrl = 'https://janakiraman-portfolio.web.app/';
-  static const String resumeUrl = 'https://drive.google.com/file/d/1mmDdBvVHjD62fZEM_xfYCkWxILNzrxpm/view?usp=sharing';
-  
-  // Stats
-  static const String yearsExperience = '2+';
-  static const String projectsCompleted = '5+';
-  static const String appsPlatforms = '3';
-  
-  // About Me
-  static const String aboutTitle = 'Senior Flutter Developer';
-  static const String aboutDescription1 =
-      'I build production-grade cross-platform apps with Flutter and Dart — '
-      'from architecture decisions to App Store deployment. '
-      'At Zebu I own the full development cycle of MYNT, a real-time trading platform '
-      'handling live market data, portfolio management, and multi-stock tracking across '
-      'iOS, Android, and Web.';
+class Profile {
+  static const name = 'Janakiraman Velayutham';
+  static const shortName = 'Janakiraman V';
+  static const role = 'Flutter Developer';
+  static const location = 'Chennai, India';
+  static const availability =
+      'Open to Flutter roles in Chennai, Bangalore, Dubai and Ireland · 30-day notice · Freelance projects welcome';
 
-  static const String aboutDescription2 =
-      'I care about clean architecture, readable code, and UI that actually makes '
-      'sense to users. I\'ve shipped features end-to-end using REST APIs, WebSockets, '
-      'Provider, and Riverpod — comfortable working independently or leading a small team. '
-      'Available for freelance contracts and open to senior/lead Flutter roles.';
-  
-  // Skills
-  static const List<String> skills = [
-    "JAVA", "MySQL", "HTML", "CSS", 
-    "Flutter", "Dart", "Vue", "React", 
-    "Web Socket",
-  ];
-  
-  // Languages
-  static const List<String> languages = [
-    "English", "Tamil", "Hindi"
-  ];
-  
-  // Experience
-  static const List<Map<String, String>> experience = [
-    {
-      "role": "Mobile App Developer",
-      "company": "Zebu Share And Wealth Managements Pvt Ltd",
-      "period": "Feb 2024 – Present",
-      "location": "Chennai",
-      "description": 
-          "Leading mobile app development for MYNT trading platform using Flutter and Dart.\n"
-          "• Redesigned MYNT trading app UI using Flutter and Dart.\n"
-          "• Built Pay-off and Portfolio feature for multi‑stock management.\n"
-          "• Led mobile‑to‑web conversion to expand accessibility.\n"
-          "• Integrated RESTful APIs and models for real‑time data.\n"
-          "• Optimized performance using Provider and Riverpod.",
-      "current": "true"
-    },
-    // {
-    //   "role": "UI Designer – Intern",
-    //   "company": "NETAXIS IT SOLUTIONS PRIVATE LIMITED",
-    //   "period": "Nov 2023 – May 2024",
-    //   "location": "Chennai",
-    //   "description": 
-    //       "Developed responsive web interfaces and trained in modern UI design technologies.\n"
-    //       "• Trained in UI design: HTML, SCSS, Bootstrap, JavaScript.\n"
-    //       "• Developed responsive web interfaces."
-    // },
-    {
-      "role": "ADMIN - EXECUTIVE",
-      "company": "CAPRICORN FOOD PRODUCTS INDIA LIMITED",
-      "period": "August 2023 – July 2024",
-      "location": "Chennai",
-      "description": 
-          "Collaborated across teams to enhance network performance and user support, boosting system reliability.\n"
-          "• Configured LAN and network printers.\n"
-          "• Resolved Outlook client issues.\n"
-          "• Managed domain configuration and user profiles on Windows Server 2003/2008.\n"
-          "• Maintained IT assets and management.\n"
-          "• Created and edited documents, reports, and presentations using MS Office Suite.\n"
-          "• Managed office supplies inventory for seamless operations"
-    },
-  ];
-  
-  // Education
-  static const List<Map<String, String>> education = [
-    {
-      "degree": "B.E (CSE)",
-      "school": "ARM COLLEGE OF ENGINEERING AND TECHNOLOGY",
-      "period": "2018 – 2022",
-      "location": "Maraimalainagar",
-      "score": "73.5%"
-    },
-    {
-      "degree": "SSLC",
-      "school": "SUBHAM VIDHYALAYA CBSE SCHOOL",
-      "period": "2015 – 2016",
-      "location": "Maduranthakam",
-      "score": "70.0%"
-    }
-  ];
-  
-  // Courses
-  static const List<Map<String, String>> courses = [
-    {
-      "title": "JAVA FULL STACK",
-      "institution": "PUMO TECHNOVATION",
-      "period": "July 2024",
-      "location": "CHENNAI"
-    }
-  ];
-  
-  // Projects
-  static const List<Map<String, String>> projects = [
-    {
-      "title": "MYNT — Trading Platform",
-      "description": "Led UI redesign and feature development for MYNT, a real-time stock trading app at Zebu. Built the Pay-off graph, Portfolio tracker, and converted the mobile app to web — enabling the same codebase to run on iOS, Android, and browsers.",
-      "link": "",
-      "tech": "Flutter, Dart, REST APIs, WebSocket, Provider, Riverpod",
-      "type": "Mobile + Web"
-    },
-    {
-      "title": "Portfolio Website",
-      "description": "This portfolio — a Flutter Web app deployed on Firebase Hosting. Responsive across mobile and desktop, with scroll-triggered animations and a contact form backed by Formspree.",
-      "link": "https://janakiraman-portfolio.web.app/",
-      "tech": "Flutter Web, Firebase Hosting, Formspree",
-      "type": "Web App"
-    },
-  ];
-  
-  // Social Links Map
-  static const Map<String, String> socialLinks = {
-    "Email": "mailto:$email",
-    "Phone": "tel:$phone",
-    "LinkedIn": linkedinUrl,
-    "GitHub": githubUrl,
+  static const email = 'vjanakiraman03@gmail.com';
+  static const phone = '+91 74010 33915';
+  static const githubUrl = 'https://github.com/NeverReallyOver';
+  static const linkedinUrl =
+      'https://www.linkedin.com/in/janakiraman-velayutham-6507bb208';
+  static const resumePath = 'Janakiraman_Velayutham_Resume.pdf';
+
+  static const myntPlayUrl =
+      'https://play.google.com/store/apps/details?id=com.mynt.trading_app_zebu';
+  static const myntWebUrl = 'https://myntweb.web.app/';
+}
+
+class HeroCopy {
+  static const eyebrow = 'Flutter developer · Chennai, India';
+  static const headline = 'I build real-time trading apps in Flutter.';
+  static const intro =
+      'For almost two years I\'ve worked on Mynt, a stock, F&O and mutual fund trading app for '
+      'Android, iOS and the web with 10,000+ downloads. Live prices over WebSockets, order flows '
+      'that have to be right the first time, and keeping all of it smooth on low-end phones.';
+}
+
+class Stat {
+  const Stat(this.value, this.caption);
+  final String value;
+  final String caption;
+}
+
+const stats = [
+  Stat('10K+', 'Play Store downloads for Mynt, the trading app I work on'),
+  Stat('93', 'merged pull requests, the most on a 10-person team'),
+  Stat('13', 'consecutive releases I shipped to Google Play and the App Store'),
+  Stat('−96%',
+      'frame stutters after my performance work, measured on a low-end phone'),
+];
+
+class Measure {
+  const Measure(
+      this.label, this.before, this.after, this.beforeText, this.afterText);
+  final String label;
+  final double before;
+  final double after;
+  final String beforeText;
+  final String afterText;
+}
+
+class Mynt {
+  static const title = 'Mynt: a real-time trading app';
+  static const summary =
+      'Zebu\'s trading app for stocks, F&O, commodities, mutual funds, IPOs and bonds. '
+      'A ~428K-line Flutter codebase shared by a 10-person team, running on Android, iOS and the web.';
+
+  static const meta = {
+    'Role': 'Flutter Developer',
+    'When': 'Jun 2025 – present',
+    'Platforms': 'Android, iOS, Web',
+    'Stack': 'Flutter, Riverpod, WebSockets, Firebase, GetIt',
   };
-  
-  // Footer
-  static const String footerTagline = 'Ready to ship something great?\nLet\'s work together.';
-  
-  // Services for Freelancing
-  static const List<Map<String, dynamic>> services = [
-    {
-      "title": "Flutter Mobile Development",
-      "description": "Build native-quality iOS and Android apps with a single codebase",
-      "features": ["Cross-platform development", "State management", "UI/UX design", "App store deployment"],
-      "icon": "phone_android"
-    },
-    {
-      "title": "Flutter Web Development",
-      "description": "Create responsive, fast web applications with Flutter Web",
-      "features": ["Responsive design", "Performance optimization", "Modern UI/UX", "SEO friendly"],
-      "icon": "web"
-    },
-    {
-      "title": "UI/UX Design & Implementation",
-      "description": "Beautiful, intuitive interfaces that users love",
-      "features": ["Custom UI design", "Material Design", "Animations", "User experience"],
-      "icon": "palette"
-    },
-    {
-      "title": "API Integration",
-      "description": "Seamless integration with REST APIs and third-party services",
-      "features": ["REST API integration", "Firebase services", "Real-time data", "Authentication"],
-      "icon": "api"
-    },
-    {
-      "title": "App Maintenance & Support",
-      "description": "Ongoing support and updates for your applications",
-      "features": ["Bug fixes", "Feature updates", "Performance optimization", "Technical support"],
-      "icon": "support_agent"
-    },
-    {
-      "title": "Consultation & Code Review",
-      "description": "Expert guidance for your Flutter projects",
-      "features": ["Architecture planning", "Code review", "Best practices", "Technical guidance"],
-      "icon": "code"
-    },
+
+  static const built = [
+    'Order placement and modification, GTT/OCO and basket orders',
+    'Option chain with basket-mode trading, and a strategy builder with ready-made straddles and strangles',
+    'Moved charts to a self-hosted charting library with owner-based WebSocket subscriptions',
+    'Mutual fund SIPs and baskets, IPO applications over UPI, P&L reports with a calendar heatmap',
+    'Profile Re-KYC (eSign, DigiLocker, nominee) and in-app support tickets with attachments',
+    'Desktop web trading layout in Flutter Web: positions, holdings, order book, funds',
+  ];
+
+  static const perfTitle = 'Making it smooth on a low-end phone';
+  static const perfBody =
+      'I profiled the app on a Galaxy A04e with a scripted 24-step session, then fixed what '
+      'showed up: heavy parsing moved to background isolates, live price ticks batched every '
+      '150 ms, a holdings total that recalculated on every tick, and 400+ call sites that '
+      'rebuilt widgets for no reason.';
+  static const perfNote =
+      'Profile builds on a Galaxy A04e, median of two runs, same 24-step session.';
+
+  static const perf = [
+    Measure('Frame stutters (> 50 ms)', 1378, 59, '1,378', '59'),
+    Measure('Median screen load', 1.19, 0.41, '1.19 s', '0.41 s'),
+    Measure('Holdings screen load', 4.8, 1.5, '4.8 s', '1.5 s'),
+    Measure('Peak memory', 535, 477, '535 MB', '477 MB'),
+  ];
+
+  static const securityTitle = 'Hardening security';
+  static const security = [
+    'Session and API tokens moved into Android Keystore and iOS Keychain, with a one-time migration',
+    'SHA-256 certificate pinning, secrets redacted from logs, logging off in release builds',
+    'Double-submit guards on about 20 order and payment actions',
+  ];
+
+  static const releaseTitle = 'Shipping it';
+  static const release =
+      'I prepare and submit Mynt\'s releases: 13 in a row from v1.0.64 to v1.0.89, '
+      'including the Android 16 KB page-size update.';
+}
+
+class Project {
+  const Project({
+    required this.title,
+    required this.kind,
+    required this.body,
+    required this.facts,
+    required this.stack,
+    this.url,
+    this.urlLabel,
+  });
+
+  final String title;
+  final String kind;
+  final String body;
+  final List<String> facts;
+  final List<String> stack;
+  final String? url;
+  final String? urlLabel;
+}
+
+const workProjects = [
+  Project(
+    title: 'Helpdesk app',
+    kind: 'Internal app at Zebu · sole developer',
+    body:
+        'A Flutter app for the support team: tickets, tasks, SLA plans, knowledge base, '
+        'reports and exports, with push notifications and automatic token refresh.',
+    facts: [
+      '~42K lines of Dart',
+      '380+ automated tests',
+      'Shorebird code push and in-app update prompts'
+    ],
+    stack: ['Flutter', 'Riverpod', 'Dio', 'go_router', 'FCM', 'Shorebird'],
+  ),
+  Project(
+    title: 'Call Tracker',
+    kind: 'Internal Android app at Zebu',
+    body:
+        'Logs business calls and matches each one to its recording on the device, then syncs '
+        'in the background, even after the app is killed or the phone restarts.',
+    facts: [
+      'Native Kotlin foreground service and call-state monitoring',
+      'WorkManager sync with an offline queue in Drift',
+      '35 of 35 test calls matched to the right recording on Android 16',
+    ],
+    stack: ['Flutter', 'Kotlin', 'WorkManager', 'Drift', 'Riverpod'],
+  ),
+  Project(
+    title: 'eKYC account opening',
+    kind: 'Onboarding app at Zebu · Feb–Apr 2025',
+    body: 'Screens that take a new customer from sign-up to a trading account: '
+        'mobile and email OTP, PAN, nominee validation, trading preferences and '
+        'UPI bank verification on iOS.',
+    facts: [],
+    stack: ['Flutter', 'Riverpod', 'GetIt'],
+  ),
+];
+
+const sideProjects = [
+  Project(
+    title: 'Drone services booking app',
+    kind: 'Freelance',
+    body:
+        'Book drone services and buy drones, with phone OTP login, location-based booking, '
+        'Razorpay payments and push notifications.',
+    facts: [],
+    stack: ['Flutter', 'Riverpod', 'Google Maps', 'Razorpay', 'Firebase'],
+  ),
+  Project(
+    title: 'Business Software Factory',
+    kind: 'Personal',
+    body:
+        'A reusable SaaS starter: authentication, roles, user invites, audit logging and '
+        'row-level security on Postgres.',
+    facts: [],
+    stack: ['Next.js', 'TypeScript', 'Supabase', 'Vitest'],
+    url: 'https://github.com/NeverReallyOver/business-software-factory',
+    urlLabel: 'Code',
+  ),
+  Project(
+    title: 'Trading Assistant',
+    kind: 'Personal · private repository',
+    body:
+        'A modular Dart workspace for Indian index options: a signal engine, backtester, '
+        'options strategy toolkit and paper trading, covered by 700+ automated tests.',
+    facts: [],
+    stack: ['Dart', 'Flutter', 'WebSockets'],
+  ),
+  Project(
+    title: 'Flutter App Starter',
+    kind: 'Personal · open source',
+    body:
+        'A starter template with Firebase email sign-in, Riverpod auth state, Google AdMob '
+        'and a Material 3 light and dark theme.',
+    facts: [],
+    stack: ['Flutter', 'Firebase Auth', 'Riverpod', 'AdMob'],
+    url: 'https://github.com/NeverReallyOver/flutter_app_starter',
+    urlLabel: 'Code',
+  ),
+  Project(
+    title: 'Crypto Research',
+    kind: 'Personal',
+    body:
+        'Market data app with charts, a watchlist and stats, backed by a caching Node.js API '
+        'that keeps the CoinGecko key off the device.',
+    facts: [],
+    stack: ['Flutter', 'Riverpod', 'Node.js', 'TypeScript'],
+    url: 'https://github.com/NeverReallyOver/crypto-research',
+    urlLabel: 'Code',
+  ),
+  Project(
+    title: 'This site',
+    kind: 'Personal',
+    body:
+        'Built in Flutter Web. The watchlist at the top is a live widget with a simulated '
+        'price feed, batched the same way Mynt batches real ticks.',
+    facts: [],
+    stack: ['Flutter Web', 'Firebase Hosting'],
+    url: 'https://github.com/NeverReallyOver/my_portfolio',
+    urlLabel: 'Code',
+  ),
+];
+
+class TimelineEntry {
+  const TimelineEntry(this.when, this.title, this.place, this.note);
+  final String when;
+  final String title;
+  final String place;
+  final String note;
+}
+
+const timeline = [
+  TimelineEntry(
+      'Feb 2025 – now',
+      'Flutter Developer',
+      'Zebu Share and Wealth Managements',
+      'Mynt trading app on mobile and web, the Helpdesk and Call Tracker apps, eKYC onboarding screens.'),
+  TimelineEntry('Aug 2024 – Jan 2025', 'Full-time Flutter and Dart study',
+      'Self-directed', 'Switched from IT support to app development.'),
+  TimelineEntry('Jul 2024', 'Java Full Stack Development course',
+      'Pumo Technovation, Chennai', ''),
+  TimelineEntry(
+      'Aug 2023 – Jul 2024',
+      'Admin Executive, IT and Network',
+      'Capricorn Food Products India',
+      'Systems, LAN and Windows Server administration.'),
+  TimelineEntry('2022', 'B.E. Computer Science and Engineering',
+      'ARM College of Engineering and Technology', 'Aggregate 73.5%.'),
+];
+
+class SkillGroup {
+  const SkillGroup(this.title, this.items);
+  final String title;
+  final List<String> items;
+}
+
+const skillGroups = [
+  SkillGroup('Flutter', [
+    'Dart',
+    'Riverpod',
+    'Provider',
+    'GetIt',
+    'go_router',
+    'Isolates',
+    'Flutter Web'
+  ]),
+  SkillGroup('Platforms', [
+    'Android',
+    'iOS',
+    'Kotlin services',
+    'WorkManager',
+    'Play Console',
+    'App Store Connect',
+    'Shorebird'
+  ]),
+  SkillGroup('Data and services', [
+    'REST APIs',
+    'WebSockets',
+    'Dio',
+    'Firebase FCM, Crashlytics, Analytics',
+    'Secure storage',
+    'Drift (SQLite)'
+  ]),
+  SkillGroup('Also',
+      ['TypeScript', 'Next.js', 'Supabase', 'Node.js', 'Git and GitHub']),
+];
+
+class About {
+  static const paragraphs = [
+    'I moved into app development from IT support in 2024. Since then I\'ve spent every working day '
+        'on a production trading app: shipping features, chasing jank on cheap phones and doing the releases.',
+    'Real-time data, money flows, background work on Android, and the last 10% of polish that '
+        'makes an app feel fast: that\'s the work I enjoy most.',
   ];
 }
 
-/// Skills data structure for detailed skill representation
-class SkillData {
-  final String name;
-  final String category;
-  final double level; // 0.0 to 1.0
-  final bool isPlaceholder;
-  
-  const SkillData({
-    required this.name,
-    required this.category,
-    required this.level,
-    this.isPlaceholder = false,
-  });
-}
-
-/// Experience/Project data structure
-class ExperienceData {
-  final String role;
-  final String company;
-  final String duration;
-  final String description;
-  final List<String> achievements;
-  final List<String> techStack;
-  final bool isCurrent;
-  final bool isPlaceholder;
-  
-  const ExperienceData({
-    required this.role,
-    required this.company,
-    required this.duration,
-    required this.description,
-    required this.achievements,
-    required this.techStack,
-    this.isCurrent = false,
-    this.isPlaceholder = false,
-  });
-}
-
-/// Service offering data structure
-class ServiceData {
+class Offer {
+  const Offer(this.title, this.body, this.proof);
   final String title;
-  final String description;
-  final List<String> features;
-  
-  const ServiceData({
-    required this.title,
-    required this.description,
-    required this.features,
-  });
+  final String body;
+  final String proof;
 }
 
-/// Project data structure
-class ProjectData {
-  final String title;
-  final String description;
-  final String? link;
-  final List<String>? techStack;
-  final String? imageUrl;
-  
-  const ProjectData({
-    required this.title,
-    required this.description,
-    this.link,
-    this.techStack,
-    this.imageUrl,
-  });
-}
+class Freelance {
+  static const title = 'Need a Flutter app built or fixed?';
+  static const intro =
+      'Alongside my full-time work I take on a small number of freelance projects. '
+      'One codebase, shipped to Android, iOS and the web.';
 
-/// Education data structure
-class EducationData {
-  final String degree;
-  final String school;
-  final String period;
-  final String location;
-  final String score;
-  
-  const EducationData({
-    required this.degree,
-    required this.school,
-    required this.period,
-    required this.location,
-    required this.score,
-  });
+  static const offers = [
+    Offer(
+      'A new app',
+      'Booking, payments, maps, logins and push notifications, built and released to the stores.',
+      'Built a drone-services booking app with Razorpay and Google Maps for a client.',
+    ),
+    Offer(
+      'Real-time and fintech',
+      'Live prices over WebSockets, watchlists, order flows and dashboards that stay correct under load.',
+      'Work daily on Mynt, a trading app with 10K+ downloads.',
+    ),
+    Offer(
+      'Make a slow app fast',
+      'Profiling on real low-end phones, then fixing jank, slow screens, startup time and memory.',
+      'Cut frame stutters by 96% on a low-end phone in a 428K-line app.',
+    ),
+  ];
 }

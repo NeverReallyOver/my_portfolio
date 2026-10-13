@@ -1,47 +1,53 @@
 # Janakiraman V — Developer Portfolio
 
-My personal portfolio website, built entirely with **Flutter Web** and hosted on
-**Firebase Hosting**.
+My portfolio site, built with **Flutter Web** and hosted on **Firebase Hosting**.
 
 **Live site:** https://janakiraman-portfolio.web.app
 
-## Sections
+## What's on it
 
-- **Hero:** name, role and availability
-- **About:** summary of my work and how I approach building apps
-- **Skills:** technologies and tools I work with
-- **Experience:** timeline of roles
-- **Projects:** selected work with links
-- **Education:** degree and courses
-- **Contact:** email, LinkedIn, GitHub and résumé links
+- **Hero** with a live watchlist widget: simulated ticks arrive every 50 ms and
+  the UI rebuilds once per 150 ms batch, the same pattern I use for real-time
+  prices in production
+- **Proof strip:** four numbers from my work on the Mynt trading app
+- **Selected work:** a Mynt case study with measured before/after performance
+  results, plus internal apps, freelance and side projects
+- **Experience**, **About and skills**, **Freelance** and **Contact**
 
-Sections animate in on scroll, and the layout adapts from mobile to desktop
-widths.
+## Design
 
-## Tech stack
-
-Flutter (Web) · Dart · `google_fonts` · `url_launcher` ·
-Firebase Hosting
+Editorial and restrained: warm paper background, ink text, one navy accent.
+Fraunces for headings, IBM Plex Sans for reading and IBM Plex Mono for labels and
+numbers. Layout adapts across phone, tablet and desktop breakpoints.
 
 ## Project structure
 
 ```text
 lib/
 ├── main.dart
-├── home_screen.dart          # single-page layout + section navigation
-├── constants.dart            # colors, breakpoints, spacing
-├── data/portfolio_data.dart  # all content (text, links, skills, projects)
-└── widgets/                  # one widget per section + nav bar + scroll animation
+├── home_screen.dart           # page layout, sticky top bar, section scrolling
+├── theme.dart                 # colour and type tokens
+├── data/portfolio_data.dart   # all copy, figures and links
+└── widgets/
+    ├── common.dart            # layout width, buttons, links, tags, section header
+    ├── top_bar.dart
+    ├── hero_section.dart
+    ├── live_watchlist.dart    # batched real-time widget
+    ├── proof_strip.dart
+    ├── work_section.dart      # Mynt case study, project cards, side projects
+    └── profile_sections.dart  # experience, about/skills, freelance, contact
+test/widget_test.dart          # renders the page at 375, 820 and 1440 px; fails on overflow
 ```
 
-All content lives in `lib/data/portfolio_data.dart`, so updating the site
-means editing data, not widgets.
+All content lives in `lib/data/portfolio_data.dart`, so updating the site means
+editing data, not widgets.
 
 ## Run locally
 
 ```bash
 flutter pub get
 flutter run -d chrome
+flutter test
 ```
 
 ## Deploy

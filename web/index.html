@@ -1,118 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SEO Meta Tags -->
+  <title>Janakiraman Velayutham · Flutter Developer</title>
   <meta name="description"
-    content="Janakiraman Velayutham - Professional Flutter Developer and Associate Java Developer from Chennai, India. Specializing in mobile and web app development. Available for freelance projects.">
+    content="Flutter developer in Chennai building Mynt, a real-time stock trading app for Android, iOS and web with 10,000+ downloads. Riverpod, WebSockets, performance and security. Open to Flutter roles in India, Dubai and Ireland.">
   <meta name="keywords"
-    content="Flutter Developer, Java Developer, Mobile App Developer, Web Developer, Freelance Flutter, Chennai Developer, Cross-platform Development, Dart, Firebase, Janakiraman Velayutham">
+    content="Flutter Developer, Dart, Riverpod, WebSockets, Mobile App Developer, Android, iOS, Flutter Web, Fintech, Trading App, Chennai, Janakiraman Velayutham">
   <meta name="author" content="Janakiraman Velayutham">
 
-  <!-- Open Graph Meta Tags for Social Sharing -->
-  <meta property="og:title" content="Janakiraman Velayutham - Flutter & Java Developer Portfolio">
+  <meta property="og:title" content="Janakiraman Velayutham · Flutter Developer">
   <meta property="og:description"
-    content="Professional Flutter Developer specializing in mobile and web app development. Based in Chennai, India. Let's build something amazing together!">
+    content="I build real-time trading apps in Flutter. Mynt: 10K+ downloads, 13 store releases, 93 merged PRs.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://janakiraman-portfolio.web.app/">
 
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Janakiraman Velayutham - Flutter & Java Developer">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Janakiraman Velayutham · Flutter Developer">
   <meta name="twitter:description"
-    content="Professional Flutter Developer specializing in mobile and web app development from Chennai, India.">
+    content="I build real-time trading apps in Flutter. Mynt: 10K+ downloads, 13 store releases, 93 merged PRs.">
 
-  <!-- iOS meta tags & icons -->
+  <meta name="theme-color" content="#F6F4EF">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Janakiraman Portfolio">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Janakiraman V">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
-
-  <title>Janakiraman Velayutham - Flutter & Java Developer Portfolio</title>
   <link rel="manifest" href="manifest.json">
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #0A0E27 0%, #1A1F3A 100%);
-      overflow: hidden;
-    }
+    html, body { margin: 0; padding: 0; background: #F6F4EF; }
 
-    /* Loading animation */
-    .loading {
+    #loading {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #0A0E27 0%, #1A1F3A 100%);
+      gap: 18px;
+      background: #F6F4EF;
+      color: #16181D;
+      font-family: Georgia, 'Times New Roman', serif;
       z-index: 9999;
+      transition: opacity 250ms ease;
     }
 
-    .loading-spinner {
-      width: 60px;
-      height: 60px;
-      border: 4px solid rgba(0, 217, 255, 0.2);
-      border-top-color: #00D9FF;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    #loading .name { font-size: 22px; letter-spacing: -0.2px; }
+
+    #loading .bar {
+      width: 120px;
+      height: 2px;
+      background: #DCD7CC;
+      overflow: hidden;
+      position: relative;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .loading-text {
+    #loading .bar::after {
+      content: '';
       position: absolute;
-      margin-top: 120px;
-      color: #00D9FF;
-      font-family: 'Arial', sans-serif;
-      font-size: 16px;
-      letter-spacing: 2px;
+      inset: 0;
+      width: 40%;
+      background: #1F3A5F;
+      animation: slide 1.1s ease-in-out infinite;
+    }
+
+    @keyframes slide {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(250%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #loading .bar::after { animation: none; width: 100%; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Loading Screen -->
-  <div class="loading" id="loading">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">LOADING...</div>
+  <div id="loading" aria-live="polite">
+    <div class="name">Janakiraman Velayutham</div>
+    <div class="bar" role="progressbar" aria-label="Loading"></div>
   </div>
 
+  <noscript>
+    <h1>Janakiraman Velayutham, Flutter Developer</h1>
+    <p>I build real-time trading apps in Flutter. Contact: vjanakiraman03@gmail.com</p>
+  </noscript>
+
   <script>
-    // Hide loading screen when Flutter app is ready
-    window.addEventListener('load', function () {
-      setTimeout(function () {
-        document.getElementById('loading').style.display = 'none';
-      }, 1000);
+    window.addEventListener('flutter-first-frame', function () {
+      var el = document.getElementById('loading');
+      el.style.opacity = '0';
+      setTimeout(function () { el.remove(); }, 300);
     });
   </script>
 

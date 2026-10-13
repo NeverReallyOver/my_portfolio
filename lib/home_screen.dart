@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_portfolio/constants.dart';
-import 'package:my_portfolio/widgets/nav_bar.dart';
 import 'package:my_portfolio/widgets/hero_section.dart';
-import 'package:my_portfolio/widgets/about_section.dart';
-import 'package:my_portfolio/widgets/experience_section.dart';
-import 'package:my_portfolio/widgets/skills_section.dart';
-import 'package:my_portfolio/widgets/education_section.dart';
-import 'package:my_portfolio/widgets/contact_section.dart';
-import 'package:my_portfolio/widgets/projects_section.dart';
-import 'package:my_portfolio/widgets/scroll_animation_wrapper.dart';
+import 'package:my_portfolio/widgets/profile_sections.dart';
+import 'package:my_portfolio/widgets/proof_strip.dart';
+import 'package:my_portfolio/widgets/top_bar.dart';
+import 'package:my_portfolio/widgets/work_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,136 +13,78 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final GlobalKey aboutKey      = GlobalKey();
-  final GlobalKey servicesKey   = GlobalKey();
-  final GlobalKey skillsKey     = GlobalKey();
-  final GlobalKey projectsKey   = GlobalKey();
-  final GlobalKey experienceKey = GlobalKey();
-  final GlobalKey contactKey    = GlobalKey();
-  final ScrollController _scrollController = ScrollController();
+  final _scroll = ScrollController();
+  final _keys = {
+    'Work': GlobalKey(),
+    'Experience': GlobalKey(),
+    'About': GlobalKey(),
+    'Freelance': GlobalKey(),
+    'Contact': GlobalKey(),
+  };
+  bool _scrolled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scroll.addListener(() {
+      final scrolled = _scroll.offset > 8;
+      if (scrolled != _scrolled) setState(() => _scrolled = scrolled);
+    });
+  }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _scroll.dispose();
     super.dispose();
   }
 
-  void scrollToSection(GlobalKey key) {
-    final ctx = key.currentContext;
+  void _goTo(String section) {
+    if (section == 'top') {
+      _scroll.animateTo(0,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOutCubic);
+      return;
+    }
+    final ctx = _keys[section]?.currentContext;
     if (ctx != null) {
-      Scrollable.ensureVisible(
-        ctx,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOutCubic,
-      );
+      Scrollable.ensureVisible(ctx,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOutCubic);
     }
   }
-
-  Map<String, GlobalKey> get _sectionKeys => {
-    'About':      aboutKey,
-    'Services':   servicesKey,
-    'Skills':     skillsKey,
-    'Projects':   projectsKey,
-    'Experience': experienceKey,
-    'Contact':    contactKey,
-  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // ── Scrollable page content ──────────────────────────────────
           SingleChildScrollView(
-            controller: _scrollController,
-            physics: const ClampingScrollPhysics(),
+            controller: _scroll,
             child: Column(
               children: [
-                HeroSection(
-                  onNavigate: scrollToSection,
-                  sectionKeys: _sectionKeys,
-                ),
-
-                ScrollAnimationWrapper(
-                  animationType: AnimationType.fadeInUp,
-                  delay: 0.1,
-                  child: Container(key: aboutKey, child: const AboutSection()),
-                ),
-
-                ScrollAnimationWrapper(
-                  animationType: AnimationType.scale,
-                  delay: 0.2,
-                  child: Container(key: servicesKey, child: const EducationSection()),
-                ),
-
-                ScrollAnimationWrapper(
-                  animationType: AnimationType.fadeInLeft,
-                  delay: 0.2,
-                  child: Container(key: skillsKey, child: const SkillsSection()),
-                ),
-
-                ScrollAnimationWrapper(
-                  animationType: AnimationType.fadeInRight,
-                  delay: 0.1,
-                  child: Container(key: projectsKey, child: const ProjectsSection()),
-                ),
-
-                ScrollAnimationWrapper(
-                  animationType: AnimationType.fadeInUp,
-                  delay: 0.1,
-                  child: Container(key: experienceKey, child: const ExperienceSection()),
-                ),
-
-                ScrollAnimationWrapper(
-                  animationType: AnimationType.fadeInUp,
-                  delay: 0.1,
-                  child: Container(key: contactKey, child: const ContactSection()),
-                ),
-
-                ScrollAnimationWrapper(
-                  animationType: AnimationType.fadeIn,
-                  delay: 0.1,
-                  child: _buildFooter(),
-                ),
+                const SizedBox(height: 64),
+                HeroSection(onSeeWork: () => _goTo('Work')),
+                const ProofStrip(),
+                KeyedSubtree(key: _keys['Work'], child: const WorkSection()),
+                KeyedSubtree(
+                    key: _keys['Experience'], child: const ExperienceSection()),
+                KeyedSubtree(
+                    key: _keys['About'], child: const SkillsAboutSection()),
+                KeyedSubtree(
+                    key: _keys['Freelance'], child: const FreelanceSection()),
+                KeyedSubtree(
+                    key: _keys['Contact'], child: const ContactSection()),
               ],
             ),
           ),
-
-          // ── Fixed navbar overlay ─────────────────────────────────────
           Positioned(
             top: 0,
             left: 0,
             right: 0,
-            child: NavBar(
-              onNavigate: scrollToSection,
-              sectionKeys: _sectionKeys,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFooter() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 80),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        border: Border(top: BorderSide(color: AppColors.border)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            '© ${DateTime.now().year} Janakiraman Velayutham',
-            style: AppTextStyles.body.copyWith(fontSize: 13),
-          ),
-          Text(
-            'Built with Flutter',
-            style: AppTextStyles.body.copyWith(
-              fontSize: 13,
-              color: AppColors.textMuted,
-            ),
+            child: TopBar(
+                scrolled: _scrolled,
+                sections: _keys.keys.toList(),
+                onNavigate: _goTo),
           ),
         ],
       ),
